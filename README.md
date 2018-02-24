@@ -1,6 +1,6 @@
 # **Caption This! CSCC09 Project Proposal**
 
-*Gavin Zhang � David Wan*
+*Gavin Zhang, David Wan*
 
 ## **Caption This!**
 
