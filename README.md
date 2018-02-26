@@ -28,9 +28,11 @@ We are planning to use neDB to store user information such as usernames, salted 
 ## **Challenges**
 ### Enforcing round time limits
 * The round time limit must be synchronized to whenever the uploader uploads the image rather than when the receivers actually receive the image so as to not allow timers to expire for some but the round continuing anyways since the last receiver's timer has not yet expired.
-### Synchronization:
+### Synchronization
 * An issue that can arise from the enforced time limit, especially with larger files (excessively large images) is that on a slow connection they can take a while to show up, if this occurs it's possible that a player with slow connection may only have their image load in seconds before the round ends, giving them a severe disadvantage compared to others.
 ### Managing Lobbies
 * Every user who is logged into the game is not in the same lobby, a lobby consists of only the 5 players participating in a particular match, data must not be sent to or be retrieved by the wrong lobby.
 ### Latency
 * With multiple lobbies with up to 5 players in each one and only one server it is very likely that latency will be an issues since it is only possible for the server to process one request at a time.
+### Live Chat
+* Since there will be multiple lobbies, developing a way to manage all chat rooms for each lobby will be another challenge.
