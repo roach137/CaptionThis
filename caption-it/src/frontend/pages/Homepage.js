@@ -1,12 +1,16 @@
-"use strict";
-
 import React, {Component} from 'react';
-import '../style/Homepage.css';
+import Body from '../components/Homepage/Body'
+import Header from '../components/Homepage/Header'
+import '../style/pages/Homepage.css';
 
 class Homepage extends Component {
-  lol = "Hello";
   render() {
-    return(<h1 class="banner">Homepage</h1>);
+    return(
+      <div>
+        <Header/>
+        <Body/>
+      </div>
+    );
   }
 }
 export default Homepage
