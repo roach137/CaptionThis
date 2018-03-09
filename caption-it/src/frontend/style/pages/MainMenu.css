@@ -1,0 +1,15 @@
+.main-menu {
+  display: grid;
+  grid-template-columns: 30% auto 30%;
+  grid-template-rows: 20% auto 20%;
+}
+
+.main-menu .choices {
+  grid-row-start: 2;
+  grid-row-end: span 1;
+  grid-column-start: 2;
+  grid-column-end: span 1;
+  border: 2px #3399ff solid;
+  margin: auto;
+  padding: 20px;
+}

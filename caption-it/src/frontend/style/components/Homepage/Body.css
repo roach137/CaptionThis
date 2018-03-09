@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 10% 30% 20% 30% 10%;
   grid-template-rows: 30% auto 10%;
-  width: 100vw;
+  width: 95vw;
   height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
