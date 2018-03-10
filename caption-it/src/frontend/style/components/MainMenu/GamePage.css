@@ -1,0 +1,10 @@
+.hidden {
+  visibility: hidden;
+  position: absolute;
+}
+
+.img-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
