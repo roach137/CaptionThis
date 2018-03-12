@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
+import SocketClient from "socket.io-client";
 import '../../style/components/MainMenu/HostGame.css'
 
 class HostGame extends Component {
-  // constructor(props) {
-    // super(props);
-    // this.updateState = this.updateState.bind(this);
-  // }
-  startGame() {
-    console.log('starting Game');
+  constructor(props) {
+    super(props);
+    this.isHost = this.props.isHost;
   }
-  
+
+  componentDidMount() {
+    const socket = SocketClient("https://localhost:5000"); 
+  }
+
+  onJoin() {
+
+  }
+
   render() {
     return(
       <div id="host-game-menu">

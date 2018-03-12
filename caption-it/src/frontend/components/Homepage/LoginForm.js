@@ -1,7 +1,18 @@
 import React, {Component} from 'react';
 import '../../style/components/Homepage/LoginForm.css'
+import { signup } from '../../api.js';
 
 class LoginForm extends Component {
+  signupUser(e) {
+    e.preventDefault();
+    var username = document.querySelector('form [name=username]').value;
+    var password = document.querySelector('form [name=password]').value;
+    signup(username, password, function(err, res){
+      if (err) console.log(err);
+      //TODO: go to game page
+    });
+  }
+
   render() {
     return(
       // <div id="login">
@@ -10,7 +21,7 @@ class LoginForm extends Component {
           <input type="text" name="username" placeholder="Enter your username"/>
           <input type="password" name="password" placeholder="Enter your password"/>
           <button id="signin" name="action" className="btn">Sign In</button>
-          <button id="signup" name="action" className="btn">Sign Up</button>
+          <button id="signup" name="action" className="btn" onClick={this.signupUser}>Sign Up</button>
         </form>
       // </div>
     );

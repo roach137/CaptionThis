@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import '../../style/components/MainMenu/GamePage.css'
 
 class GamePage extends Component {
-  
+  componentDidMount() {
+
+  }
 
   render() {
     return(

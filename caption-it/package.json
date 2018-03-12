@@ -5,6 +5,8 @@
   "proxy": "https://localhost:5000/",
   "dependencies": {
     "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongodb": "^3.0.4",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
