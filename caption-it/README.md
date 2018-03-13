@@ -1,3 +1,7 @@
+# Database admin login info
+Username: cloudtek
+Password: XXE8sDBttM3alQnT
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
