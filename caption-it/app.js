@@ -204,7 +204,7 @@ lobbies: a list of active lobbies (entry cleared upon game closing), turn number
 */
 
 //Create a lobby
-app.post('/api/lobbies/', sanitizeContent, isAuthenticated, function (req, res, next) {
+app.post('/api/lobbies/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -233,7 +233,7 @@ app.post('/api/lobbies/', sanitizeContent, isAuthenticated, function (req, res, 
 });
 
 //Add a new player to a lobby given the lobby ID
-app.patch('/api/lobbies/:id/', sanitizeContent, isAuthenticated, function (req, res, next) {
+app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -261,7 +261,7 @@ app.patch('/api/lobbies/:id/', sanitizeContent, isAuthenticated, function (req, 
 });
 
 //Add a point to a player's total
-app.patch('/api/lobbies/:id/scores/', sanitizeContent, isAuthenticated, function (req, res, next) {
+app.patch('/api/lobbies/:id/scores/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
