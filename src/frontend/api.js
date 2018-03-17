@@ -59,12 +59,12 @@ export function getCurrentUser(){
 
 export function signup(username, password, callback) {
   // console.log('sending signup POST');
-  send('POST', '/signup', {username : username, password : password}, callback);
+  send('POST', '/signup/', {username : username, password : password}, callback);
 }
 
 export function signin(username, password, callback) {
   // console.log('sending signup POST');
-  send('POST', '/signin', {username : username, password : password}, callback);
+  send('POST', '/signin/', {username : username, password : password}, callback);
 }
 
 export function addImage(lobbyId, file, callback) {

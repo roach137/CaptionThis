@@ -105,7 +105,7 @@ var checkUsername = function(req, res, next) {
 //   });
 //
 // });
-app.post('/signin', function(req, res) {
+app.post('/signin/', function(req, res) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
