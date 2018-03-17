@@ -185,6 +185,9 @@ app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
         return res.status(404).end("Image " + imageId + " does not exist");
       }
       console.log(entry);
+      var image = entry;
+      res.setHeader('Content-Type', image.mimetype);
+      res.sendFile(image.path);
     });
   });
 });
@@ -362,8 +365,9 @@ app.get('api/captions/:id/', function(req, res, next) {
     var imageId = req.params.id;
     db.collection('captions').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
       console.log(entry);
-      //this returns a 'cursor' instead of an object apparantely
-      //maybe we can store captions in RAM
+      if (entry) {
+        return entry.toArray();
+      }
     });
   })
 });
@@ -376,21 +380,9 @@ app.get('api/lobbies/', function(req, res, next) {
     var imageId = req.params.id;
     db.collection('lobbies').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
       console.log(entry);
-      //this returns a 'cursor' instead of an object apparantely
-    });
-  })
-});
-
-//Get an actual image by ID
-app.get('api/images/:id/', function(req, res, next) {
-  MongoClient.connect(url, function(err, database) {
-    if (err) return res.status(500).end(err.toString());
-    var db = databasedb('cloudtek');
-    var imageId = req.params.id;
-    db.collection('captions').findOne({_id: imageId}, function (err, entry) {
-      image = entry;
-      res.setHeader('Content-Type', image.mimetype);
-      res.sendFile(image.path);
+      if (entry) {
+        return entry.toArray();
+      }
     });
   })
 });
