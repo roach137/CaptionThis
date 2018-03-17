@@ -75,8 +75,9 @@ caption-it/.env.development.local
 caption-it/.env.test.local
 caption-it/.env.production.local
 
-caption-it/npm-debug.log*
-caption-it/yarn-debug.log*
-caption-it/yarn-error.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-caption-it/data
+data
+uploads
