@@ -27,6 +27,10 @@ var upload = multer({ dest: 'uploads/'});
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({
+   extended: false;
+}));
+
 const session = require('express-session');
 app.use(session({
   secret: 'mySecret',
