@@ -19,7 +19,6 @@ const crypto = require('crypto');
 const multer = require('multer');
 const validator = require('validator');
 const cookie = require('cookie');
-const session = require('express-session');
 var ObjectId = require('mongodb').ObjectID;
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test";
@@ -28,8 +27,7 @@ var upload = multer({ dest: 'uploads/'});
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.use(express.static('build'));
-
+const session = require('express-session');
 app.use(session({
   secret: 'mySecret',
   resave: false,
@@ -50,6 +48,8 @@ app.use(function(req, res, next){
     }));
     next();
 });
+
+app.use(express.static('build'));
 
 app.use(function (req, res, next){
     console.log("HTTP request", req.method, req.url, req.body);
@@ -462,10 +462,14 @@ app.delete('/api/images/:id', function (req, res, next) {
 io.on('connection', function(socket) {
    console.log('A user connected');
 
-   socket.on('test', function(msg) {
-     console.log("The message is " + msg);
-     io.emit('testresp', "Hello from server to " + socket.id);
-   })
+   socket.on('room', function(room) {
+     socket.join(room);
+   });
+
+   socket.on('start', function(data){
+     console.log(data);
+     socket.to(data.room).emit('start', data.msg);
+   });
 });
 
 app.get('/*', function(req, res, next){
