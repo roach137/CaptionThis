@@ -1,4 +1,4 @@
-const PORT = 8080;
+// const PORT = 8080;
 
 const https = require('https');
 const express = require('express');
@@ -551,7 +551,7 @@ app.get('/*', function(req, res, next){
   res.sendFile('index.html', {root: __dirname + '/build'});
 });
 
-server.listen(PORT, function (err) {
+server.listen(process.env.PORT || 5000, function (err) {
     if (err) console.log(err);
     else console.log("HTTPS server on port", PORT);
 });
