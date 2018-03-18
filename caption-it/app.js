@@ -167,7 +167,7 @@ app.post('/signup/', function(req, res, next) {
 })
 
 app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
-  console.log("getting image");
+  // console.log("getting image");
   MongoClient.connect(url, function(err, database) {
     if (err) {
       database.close();
@@ -231,22 +231,22 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
-    db.collection('lobbies').findOne({_id:req.params.id}, function (err, lobby) {
+    console.log("finding game with _id " + req.params.id);
+    db.collection('lobbies').findOne({_id:ObjectId(req.params.id)}, function (err, lobby) {
       if (lobby) {
+        var username = req.body.username;
         //insert the player into the first open player slot
-        if (lobby.p2 != null) {
-          lobby.p2 = req.params.username;
-        } else if (lobby.p3 != null) {
-          lobby.p3 = req.params.username;
-        } else if (lobby.p4 != null) {
-          lobby.p4 = req.params.username;
-        } else if (lobby.p5 != null) {
-          lobby.p5 = req.params.username;
-        } else {
-          return res.json("Lobby is full");
+        if (lobby.players.length == 5) {
+          database.close();
+          return res.status(409).end("Lobby is full");
         }
+        lobby.players.push(username);
         //actually update the lobby
-        db.collection('lobbies').update({_id: req.params.id}, lobby, {multi: false}, function(err, success) {
+        db.collection('lobbies').update({_id: ObjectId(req.params.id)}, lobby, {multi: false}, function(err, success) {
+          if (err) {
+            database.close();
+            return res.status(500).end(err.toString());
+          }
           return res.json("Successfully joined lobby");
         });
       }
@@ -304,6 +304,24 @@ app.get('/api/lobbies/:id/players/', isAuthenticated, function(req, res) {
   });
 });
 
+app.get('/api/lobbies/', isAuthenticated, function(req, res){
+  MongoClient.connect(url, function(err, database){
+    if (err) {
+      return res.status(500).end(err.toString());
+    }
+    var db = database.db('cloudtek');
+    db.collection('lobbies').find({}).toArray(function(err, results) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      // console.log(results);
+      res.status(200);
+      return res.json(results);
+    });
+  });
+});
+
 //Post an image to a given lobby
 //ID in the request URL refers to the lobby ID in this case
 // app.post('/api/images/', upload.single('file'), isAuthenticated, function (req,res,next) {
@@ -351,48 +369,6 @@ app.post('/api/caption/:id/', sanitizeContent, isAuthenticated, function (req, r
       return res.json("Caption " + caption + " for " +imageId+ " in lobby " + lobbyId +  " posted successfully.");
     });
   });
-});
-
-//Get commands
-//Get the captions associated with an image ID
-app.get('api/captions/:id/', function(req, res, next) {
-  MongoClient.connect(url, function(err, database) {
-    if (err) return res.status(500).end(err.toString());
-    var db = databasedb('cloudtek');
-    var imageId = req.params.id;
-    db.collection('captions').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
-      console.log(entry);
-      //this returns a 'cursor' instead of an object apparantely
-      //maybe we can store captions in RAM
-    });
-  })
-});
-
-//Get the list of active lobbies
-app.get('api/lobbies/', function(req, res, next) {
-  MongoClient.connect(url, function(err, database) {
-    if (err) return res.status(500).end(err.toString());
-    var db = databasedb('cloudtek');
-    var imageId = req.params.id;
-    db.collection('lobbies').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
-      console.log(entry);
-      //this returns a 'cursor' instead of an object apparantely
-    });
-  })
-});
-
-//Get an actual image by ID
-app.get('api/images/:id/', function(req, res, next) {
-  MongoClient.connect(url, function(err, database) {
-    if (err) return res.status(500).end(err.toString());
-    var db = databasedb('cloudtek');
-    var imageId = req.params.id;
-    db.collection('captions').findOne({_id: imageId}, function (err, entry) {
-      image = entry;
-      res.setHeader('Content-Type', image.mimetype);
-      res.sendFile(image.path);
-    });
-  })
 });
 
 //Clear all data relevant to a lobby, given the lobby ID

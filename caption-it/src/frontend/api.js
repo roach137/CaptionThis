@@ -78,3 +78,11 @@ export function createLobby(name, host, callback) {
 export function getPlayers(lobbyId, callback) {
   send('GET', '/api/lobbies/' + lobbyId + '/players/', null, callback);
 }
+
+export function joinLobby(lobbyId, username, callback) {
+  send('PATCH', '/api/lobbies/' + lobbyId + '/', {username : username}, callback);
+}
+
+export function getLobbies(callback) {
+  send('GET', '/api/lobbies/', null, callback);
+}

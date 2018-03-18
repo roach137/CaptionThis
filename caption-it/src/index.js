@@ -8,10 +8,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Homepage from './frontend/pages/Homepage'
 import MainMenu from './frontend/pages/MainMenu'
-import Lobby from './frontend/components/MainMenu/Lobby'
+import Lobby from './frontend/components/MainMenu/Lobby/Lobby'
 import GamePage from './frontend/components/MainMenu/GamePage'
-
-const history = createHistory();
 
 ReactDOM.render((
     <Router>
