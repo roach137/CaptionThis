@@ -42,7 +42,7 @@ class GameOptions extends React.Component {
       return(<LobbiesTable/>);
     }
     if (this.state.lobbyId != '') {
-      return(<Lobby lobbyId={this.state.lobbyId}/>);
+      return(<Lobby lobbyId={this.state.lobbyId} host={getCurrentUser()}/>);
     }
 
     return(

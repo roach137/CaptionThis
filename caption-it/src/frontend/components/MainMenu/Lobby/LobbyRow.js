@@ -16,13 +16,13 @@ class LobbyRow extends React.Component {
     if (err) {
       console.log(err);
     } else {
-      this.props.clickHandler();
+      this.props.clickHandler(this.props.host, this.props.id);
     }
   }
 
   render() {
     // return(<div id={this.props.key} onClick={this.joinGame}>{this.props.name}</div>)
-    return(<button id={this.props.id} onClick={this.joinLobby}>{this.props.name}</button>)
+    return(<button id={this.props.id} host={this.props.host} onClick={this.joinLobby}>{this.props.name}</button>)
   }
 }
 export default LobbyRow;

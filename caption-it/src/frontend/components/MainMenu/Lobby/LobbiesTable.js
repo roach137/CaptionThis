@@ -8,7 +8,7 @@ class LobbiesTable extends React.Component {
     super(props);
     this.state = {
       lobbies : [],
-      selectedLobby : false
+      selectedLobby : null
     }
     this.getLobbies = this.getLobbies.bind(this);
     this.getLobbies_callback = this.getLobbies_callback.bind(this);
@@ -27,14 +27,14 @@ class LobbiesTable extends React.Component {
       var lobby = null;
       for (var i = 0; i < res.length; i++) {
         lobby = res[i];
-        lobbies.push(<LobbyRow key={lobby._id} id={lobby._id} name={lobby.name} clickHandler={this.goToLobby}/>);
+        lobbies.push(<LobbyRow key={lobby._id} host={lobby.players[0]} id={lobby._id} name={lobby.name} clickHandler={this.goToLobby}/>);
       }
       this.setState({lobbies : lobbies});
     }
   }
 
-  goToLobby() {
-    this.setState({lobbies : this.state.lobbies, selectedLobby : true});
+  goToLobby(host, lobbyId) {
+    this.setState({lobbies : this.state.lobbies, selectedLobby : {lobbyId : lobbyId, host : host}});
   }
 
   render() {
@@ -50,7 +50,7 @@ class LobbiesTable extends React.Component {
       // }).bind(this))
     // }
     if (this.state.selectedLobby) {
-      return (<Lobby/>);
+      return (<Lobby lobbyId={this.state.selectedLobby.lobbyId} host={this.state.selectedLobby.host}/>);
     }
     return (<div>
       <button onClick={this.getLobbies}>Click to get lobbies</button>

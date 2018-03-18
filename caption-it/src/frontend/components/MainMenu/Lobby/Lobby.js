@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SocketClient from "socket.io-client";
-import { getPlayers } from '../../../api';
+import { getPlayers, getCurrentUser } from '../../../api';
+import GamePage from '../GamePage'
 import '../../../style/components/MainMenu/HostGame.css'
 
 const socket = SocketClient("https://localhost:5000");
@@ -9,7 +10,8 @@ class Lobby extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      players : []
+      players : [getCurrentUser()],
+      startGame : false
     }
 
     this.startGame = this.startGame.bind(this);
@@ -17,8 +19,12 @@ class Lobby extends Component {
     this.displayPlayers_callback = this.displayPlayers_callback.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
+    socket.emit('room', this.props.lobbyId);
 
+    socket.on('start', function(message) {
+      console.log(message);
+    })
   }
 
   displayPlayers() {
@@ -34,17 +40,21 @@ class Lobby extends Component {
   }
 
   startGame() {
-    this.displayPlayers();
+    socket.emit('start', {room : this.props.lobbyId, msg : "Starting Game"});
+    this.setState({startGame : true});
   }
 
 
   render() {
-    // this.displayPlayers();
+    if (this.state.startGame) {
+      return (<GamePage socket={socket} host={this.props.host}/>);
+    }
     return(
       <div id="host-game-menu">
         <button className="btn" onClick={this.startGame}>Start game</button>
         <div id="player-list">
           <div>{this.props.lobbyId}</div>
+          <div>{this.props.host}</div>
           <div>{this.state.players}</div>
         </div>
       </div>

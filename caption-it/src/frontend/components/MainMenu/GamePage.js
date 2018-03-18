@@ -3,6 +3,10 @@ import { addImage } from '../../api';
 import '../../style/components/MainMenu/GamePage.css'
 
 class GamePage extends Component {
+  constructor(props) {
+    super(props);
+    this.props.socket.emit('test', 'In gamepage');
+  }
   addImage(e) {
     e.preventDefault();
     var file = document.querySelector('form [name=file]').files[0];

@@ -466,11 +466,16 @@ io.on('connection', function(socket) {
      socket.join(room);
    });
 
-   socket.on('start', function(data){
+   socket.on('test', function(data){
      console.log(data);
-     socket.to(data.room).emit('start', data.msg);
+   });
+   socket.on('start', function(data){
+     console.log(io.sockets.clients());
+     socket.nsp.to(data.room).emit('start', data.msg);
    });
 });
+
+
 
 app.get('/*', function(req, res, next){
   console.log("going to a page");
