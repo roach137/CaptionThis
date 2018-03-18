@@ -31,13 +31,19 @@ app.use(bodyParser.urlencoded({
    extended: false
 }));
 
+var connect-mongo-db = null;
+MongoClient.connect(url, function(err, db) {
+  if (err) return (err.toString());
+  connect-mongo-db = db;
+}
+
 const cookie = require('cookie');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 // app.use(cookieParser());
 app.use(session({
   secret: 'mySecret',
-  store : new MongoStore({url : "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test"}),
+  store : new MongoStore({db : connect-mongo-db}),
   resave: false,
   saveUninitialized : true,
   cookie: {httpOnly: true, sameSite: true, secure: true}
