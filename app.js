@@ -31,10 +31,10 @@ app.use(bodyParser.urlencoded({
    extended: false
 }));
 
-var connect-mongo-db = null;
+var connectMongoDb = null;
 MongoClient.connect(url, function(err, db) {
   if (err) return (err.toString());
-  connect-mongo-db = db;
+  connectMongoDb = db;
 }
 
 const cookie = require('cookie');
@@ -43,7 +43,7 @@ const MongoStore = require('connect-mongo')(session);
 // app.use(cookieParser());
 app.use(session({
   secret: 'mySecret',
-  store : new MongoStore({db : connect-mongo-db}),
+  store : new MongoStore({db : connectMongoDb}),
   resave: false,
   saveUninitialized : true,
   cookie: {httpOnly: true, sameSite: true, secure: true}
