@@ -2,7 +2,7 @@ const PORT = 8080;
 
 const https = require('https');
 const express = require('express');
-var cookieParser = require('cookie-parser');
+// var cookieParser = require('cookie-parser');
 const socketIo = require('socket.io');
 const fs = require('fs');
 var privateKey = fs.readFileSync( 'server.key' );
@@ -33,9 +33,11 @@ app.use(bodyParser.urlencoded({
 
 const cookie = require('cookie');
 const session = require('express-session');
-app.use(cookieParser());
+const MongoStore = require('connect-mongo')(session);
+// app.use(cookieParser());
 app.use(session({
   secret: 'mySecret',
+  store : new MongoStore(),
   resave: false,
   saveUninitialized : true,
   cookie: {httpOnly: true, sameSite: true}
