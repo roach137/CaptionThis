@@ -2,6 +2,7 @@ const PORT = 8080;
 
 const https = require('https');
 const express = require('express');
+var cookieParser = require('cookie-parser');
 const socketIo = require('socket.io');
 const fs = require('fs');
 var privateKey = fs.readFileSync( 'server.key' );
@@ -18,7 +19,6 @@ const path = require('path');
 const crypto = require('crypto');
 const multer = require('multer');
 const validator = require('validator');
-const cookie = require('cookie');
 var ObjectId = require('mongodb').ObjectID;
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test";
@@ -27,11 +27,13 @@ var upload = multer({ dest: 'uploads/'});
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-// app.use(bodyParser.urlencoded({
-//    extended: false
-// }));
+app.use(bodyParser.urlencoded({
+   extended: false
+}));
 
+const cookie = require('cookie');
 const session = require('express-session');
+app.use(cookieParser());
 app.use(session({
   secret: 'mySecret',
   resave: false,
@@ -548,5 +550,5 @@ app.get('/*', function(req, res, next){
 
 server.listen(PORT, function (err) {
     if (err) console.log(err);
-    // else console.log("HTTPS server on https://localhost:%s", PORT);
+    else console.log("HTTPS server on port", PORT);
 });
