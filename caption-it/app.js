@@ -185,6 +185,9 @@ app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
         return res.status(404).end("Image " + imageId + " does not exist");
       }
       console.log(entry);
+      var image = entry;
+      res.setHeader('Content-Type', image.mimetype);
+      res.sendFile(image.path);
     });
   });
 });
@@ -369,6 +372,37 @@ app.post('/api/caption/:id/', sanitizeContent, isAuthenticated, function (req, r
       return res.json("Caption " + caption + " for " +imageId+ " in lobby " + lobbyId +  " posted successfully.");
     });
   });
+});
+
+//Get commands
+//Get the captions associated with an image ID
+app.get('api/captions/:id/', function(req, res, next) {
+  MongoClient.connect(url, function(err, database) {
+    if (err) return res.status(500).end(err.toString());
+    var db = databasedb('cloudtek');
+    var imageId = req.params.id;
+    db.collection('captions').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
+      console.log(entry);
+      if (entry) {
+        return entry.toArray();
+      }
+    });
+  })
+});
+
+//Get the list of active lobbies
+app.get('api/lobbies/', function(req, res, next) {
+  MongoClient.connect(url, function(err, database) {
+    if (err) return res.status(500).end(err.toString());
+    var db = databasedb('cloudtek');
+    var imageId = req.params.id;
+    db.collection('lobbies').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
+      console.log(entry);
+      if (entry) {
+        return entry.toArray();
+      }
+    });
+  })
 });
 
 //Clear all data relevant to a lobby, given the lobby ID
