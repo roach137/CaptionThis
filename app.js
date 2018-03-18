@@ -6,15 +6,15 @@ const express = require('express');
 // var cookieParser = require('cookie-parser');
 const socketIo = require('socket.io');
 const fs = require('fs');
-var privateKey = fs.readFileSync( 'server.key' );
-var certificate = fs.readFileSync( 'server.crt' );
-var config = {
-        key: privateKey,
-        cert: certificate
-};
+// var privateKey = fs.readFileSync( 'server.key' );
+// var certificate = fs.readFileSync( 'server.crt' );
+// var config = {
+//         key: privateKey,
+//         cert: certificate
+// };
 
 const app = express();
-const server = http.createServer(config, app);
+const server = http.createServer(app);
 const io = socketIo(server);
 const path = require('path');
 const crypto = require('crypto');
