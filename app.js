@@ -37,7 +37,7 @@ const MongoStore = require('connect-mongo')(session);
 // app.use(cookieParser());
 app.use(session({
   secret: 'mySecret',
-  store : new MongoStore(),
+  store : new MongoStore({url : "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test"}),
   resave: false,
   saveUninitialized : true,
   cookie: {httpOnly: true, sameSite: true}
