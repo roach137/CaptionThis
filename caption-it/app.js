@@ -25,6 +25,8 @@ var url = "mongodb://localhost:27017/cloudtek"
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+app.use(express.static('build'));
+
 app.use(session({
   secret: 'mySecret',
   resave: false,
@@ -96,14 +98,42 @@ var checkUsername = function(req, res, next) {
 //   });
 //
 // });
-
+app.post('/signin/', function(req, res, next) {
+  MongoClient.connect(url, function(err, database) {
+    if (err) return res.status(500).end(err.toString());
+    var db = database.db('cloudtek');
+    var username = req.body.username;
+    var password = req.body.password;
+    db.collection('users').findOne({_id : username}, function(err, result) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      if (!result) {
+        database.close();
+        return res.status(409).end("Username does not exist");
+      }
+      var salt = result.salt;
+      var hash = generateHash(password, salt);
+      // console.log(hash);
+      // console.log(result.saltedHash);
+      if (hash !== result.saltedHash) {
+        database.close();
+        return res.status(401).end("access denied");
+      }
+      // console.log("Logged in");
+      res.status(200)
+      return res.json("User " + username + " signed in");
+    });
+  });
+});
 
 app.post('/signup/', function(req, res, next) {
   MongoClient.connect(url, function(err, database){
-    if (err) return res.status(500).end(err);
+    if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
     var username = req.body.username;
-    var password = req.body.username;
+    var password = req.body.password;
     db.collection('users').findOne({_id : username}, function(err, result){
       if (err) {
         database.close();
@@ -120,9 +150,9 @@ app.post('/signup/', function(req, res, next) {
           database.close();
           return res.status(500).end(err.toString());
         }
-        console.log(entry.ops);
+        // console.log(entry.ops);
         res.status(200);
-        return res.json(entry);
+        return res.json("User " + username + " signed up");
       });
     });
 

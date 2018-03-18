@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SocketClient from "socket.io-client";
+// import SocketClient from "socket.io-client";
 import '../../style/components/MainMenu/HostGame.css'
 
 class HostGame extends Component {
@@ -9,7 +9,7 @@ class HostGame extends Component {
   }
 
   componentDidMount() {
-    const socket = SocketClient("https://localhost:5000"); 
+    // const socket = SocketClient("https://localhost:5000");
   }
 
   onJoin() {
