@@ -35,7 +35,7 @@ var connectMongoDb = null;
 MongoClient.connect(url, function(err, db) {
   if (err) return (err.toString());
   connectMongoDb = db;
-}
+});
 
 const cookie = require('cookie');
 const session = require('express-session');
