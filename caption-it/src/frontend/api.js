@@ -36,6 +36,12 @@ function send(method, url, data, callback){
       }
   }
 
+export function getCurrentUser(){
+    var l = document.cookie.split("username=");
+    if (l.length > 1) return l[1];
+    return null;
+}
+
 export function signup(username, password, callback) {
   // console.log('sending signup POST');
   send('POST', '/signup/', {username : username, password : password}, callback);

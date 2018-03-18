@@ -20,6 +20,7 @@ class LoginForm extends Component {
     signin(username, password, function(err, res){
       if (err) console.log(err);
       //TODO: go to game page
+      console.log(res);
     });
   }
 
