@@ -33,11 +33,11 @@ app.use(bodyParser.urlencoded({
 
 const cookie = require('cookie');
 const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+// const MongoStore = require('connect-mongo')(session);
 // app.use(cookieParser());
 app.use(session({
   secret: 'mySecret',
-  store : new MongoStore({url : url}),
+  // store : new MongoStore({url : url}),
   resave: false,
   saveUninitialized : true,
   cookie: {httpOnly: true, sameSite: true, secure: true}
