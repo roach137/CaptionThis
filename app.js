@@ -553,5 +553,5 @@ app.get('/*', function(req, res, next){
 
 server.listen(process.env.PORT || 5000, function (err) {
     if (err) console.log(err);
-    else console.log("HTTPS server on port", PORT);
+    else console.log("HTTPS server on port");
 });
