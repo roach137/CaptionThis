@@ -34,19 +34,20 @@ app.use(bodyParser.urlencoded({
 const cookie = require('cookie');
 const session = require('express-session');
 // const MongoStore = require('connect-mongo')(session);
-// app.use(cookieParser());
+
+session.cookie = {httpOnly: true, sameSite: true}
 app.use(session({
   secret: 'mySecret',
   // store : new MongoStore({url : url}),
   resave: false,
   saveUninitialized : true,
-  cookie: {httpOnly: true, sameSite: true, secure: true}
+  cookie: {httpOnly: true, sameSite: true}
 }));
 
-// if (app.get('env') === 'production') {
-//   session.cookie.secure = true;
-//   session.cookie.sameSite = true;
-// }
+if (app.get('env') === 'production') {
+  session.cookie.secure = true;
+  session.cookie.sameSite = true;
+}
 
 app.use(function(req, res, next){
     var username = (req.session.username)? req.session.username : '';
