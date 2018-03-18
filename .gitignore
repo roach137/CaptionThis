@@ -57,3 +57,26 @@ typings/
 # dotenv environment variables file
 .env
 
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# dependencies
+caption-it/node_modules
+
+# testing
+caption-it/coverage
+
+# production
+caption-it/build
+
+# misc
+caption-it/.DS_Store
+caption-it/.env.local
+caption-it/.env.development.local
+caption-it/.env.test.local
+caption-it/.env.production.local
+
+caption-it/npm-debug.log*
+caption-it/yarn-debug.log*
+caption-it/yarn-error.log*
+
+caption-it/data
