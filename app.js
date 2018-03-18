@@ -1,6 +1,7 @@
 // const PORT = 8080;
 
-const https = require('https');
+// const https = require('https');
+const http = require('http');
 const express = require('express');
 // var cookieParser = require('cookie-parser');
 const socketIo = require('socket.io');
@@ -13,7 +14,7 @@ var config = {
 };
 
 const app = express();
-const server = https.createServer(config, app);
+const server = http.createServer(config, app);
 const io = socketIo(server);
 const path = require('path');
 const crypto = require('crypto');
@@ -553,5 +554,5 @@ app.get('/*', function(req, res, next){
 
 server.listen(process.env.PORT || 5000, function (err) {
     if (err) console.log(err);
-    else console.log("HTTPS server on port");
+    else console.log("Server is now live");
 });
