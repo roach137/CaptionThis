@@ -40,13 +40,13 @@ app.use(session({
   store : new MongoStore({url : "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test"}),
   resave: false,
   saveUninitialized : true,
-  cookie: {httpOnly: true, sameSite: true}
+  cookie: {httpOnly: true, sameSite: true, secure: true}
 }));
 
-if (app.get('env') === 'production') {
-  session.cookie.secure = true;
-  session.cookie.sameSite = true;
-}
+// if (app.get('env') === 'production') {
+//   session.cookie.secure = true;
+//   session.cookie.sameSite = true;
+// }
 
 app.use(function(req, res, next){
     var username = (req.session.username)? req.session.username : '';
