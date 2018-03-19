@@ -195,7 +195,7 @@ app.get('/api/images/:id/image/', function(req, res) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
-    db.collection('images').findOne({_id : req.params.id}, function(err, data) {
+    db.collection('images').findOne(ObjectId(req.params.id), function(err, data) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
@@ -256,7 +256,12 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
     console.log("finding game with _id " + req.params.id);
-    db.collection('lobbies').findOne({_id:req.params.id}, function (err, lobby) {
+    db.collection('lobbies').findOne({_id:ObjectId(req.params.id)}, function (err, lobby) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      console.log(lobby);
       if (lobby) {
         var username = req.body.username;
         //insert the player into the first open player slot
@@ -492,6 +497,7 @@ io.on('connection', function(socket) {
    });
 
    socket.on('uploaded image', function(data){
+     console.log(data.imageId);
      socket.nsp.to(data.room).emit('uploaded image', data.imageId);
    });
 });
