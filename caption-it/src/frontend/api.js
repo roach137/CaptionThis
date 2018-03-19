@@ -67,3 +67,7 @@ export function signin(username, password, callback) {
   // console.log('sending signup POST');
   send('POST', '/signin/', {username : username, password : password}, callback);
 }
+
+export function addImage(file, callback) {
+  sendFiles('POST', '/api/images/', {file : file}, callback);
+}

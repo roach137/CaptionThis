@@ -16,11 +16,13 @@ const server = https.createServer(config, app);
 const io = socketIo(server);
 const path = require('path');
 const crypto = require('crypto');
+const multer = require('multer');
 const validator = require('validator');
 const cookie = require('cookie');
 const session = require('express-session');
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/cloudtek"
+var url = "mongodb://localhost:27017/cloudtek";
+var upload = multer({ dest: 'uploads/'});
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -101,7 +103,7 @@ var checkUsername = function(req, res, next) {
 app.post('/signin/', function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
-    var db = database.db('cloudtek');
+    var db = database.db('users');
     var username = req.body.username;
     var password = req.body.password;
     db.collection('users').findOne({_id : username}, function(err, result) {
@@ -133,7 +135,7 @@ app.post('/signin/', function(req, res, next) {
 app.post('/signup/', function(req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
-    var db = database.db('cloudtek');
+    var db = database.db('users');
     var username = req.body.username;
     var password = req.body.password;
     db.collection('users').findOne({_id : username}, function(err, result){
@@ -179,9 +181,21 @@ captions: a list of captions (cleared after every game)
 
 //Post an image to a given lobby
 //ID in the request URL refers to the lobby ID in this case
-app.post('/api/images/:id/', sanitizeContent, isAuthenticated, function (req,res,next) {
+// app.post('/api/images/', upload.single('file'), isAuthenticated, function (req,res,next) {
+app.post('/api/images/', upload.single('file'), function (req,res,next) {
   MongoClient.connect(url, function(err, database) {
     //We're probably better off copy pasting your code from A2 or A3 (since your mark is higher than mine)
+    var db = database.db("images");
+    var img = req.file;
+    // console.log(img);
+    db.collection('images').insertOne(img, function(err, entry) {
+      if (err) return res.status(500).end(err.toString());
+      res.status(200);
+
+      console.log(entry.ops[0]._id);
+      var result = {_id : entry.ops[0]._id}
+      return res.json(result);
+    })
   });
 });
 
@@ -205,6 +219,7 @@ app.post('/api/caption/:id/', sanitizeContent, isAuthenticated, function (req, r
       }
       res.status(200);
       return res.json("Caption " + caption + " for " +imageId+ " in lobby " + lobbyId +  " posted successfully.");
+    });
   });
 });
 
@@ -232,6 +247,7 @@ app.delete('/api/endgame/:id', function (req, res, next) {
       });
       res.status(200);
       return res.json("Captions for lobby " + lobbyId +  " deleted successfully.");
+    });
   });
 });
 
