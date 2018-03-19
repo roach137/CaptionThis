@@ -14,7 +14,7 @@ class MakeCaption extends React.Component {
     var caption = document.querySelector('#caption-text').value;
     console.log(caption);
     var imageId = "PLACEHOLDER";
-    addCaption(caption, imageId, this.submitCaptionHandler_callback);
+    addCaption(caption, imageId, this.props.lobbyId, this.submitCaptionHandler_callback);
   }
 
   submitCaptionHandler_callback(err, res) {
@@ -28,9 +28,9 @@ class MakeCaption extends React.Component {
   render() {
     return (
       <div className='playerbox'>
-        <form id='caption-form'>
-          <textarea id='caption-text' placeholder='enter your caption here...'></textarea>
-          <button onClick={this.submitCaptionHandler}>Submit caption</button>
+        <form id='caption-form' onSubmit={this.submitCaptionHandler}>
+          <textarea id='caption-text' placeholder='enter your caption here...' required></textarea>
+          <button>Submit caption</button>
         </form>
       </div>
     );

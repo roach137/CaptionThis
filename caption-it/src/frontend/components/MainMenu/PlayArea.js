@@ -16,26 +16,28 @@ class PlayArea extends React.Component {
   componentWillMount(){
     var self = this;
     this.props.socket.on('uploaded image', function(data){
-      self.setState({submitCaption : true});
+      self.setState({submitCaption : true, waiting : false, voting : false});
     });
   }
 
   onCaptionSubmit(){
-    this.setState({submitCaption : false, waiting : true, voting : false})
+    this.setState({submitCaption : false, waiting : true, voting : false});
+
   }
 
   render(){
     if (this.state.submitCaption) {
       return (
         <div id="playarea">
-          <MakeCaption captionHandler={this.onCaptionSubmit} socket={this.props.socket}/>
+          <MakeCaption captionHandler={this.onCaptionSubmit} socket={this.props.socket} lobbyId={this.props.lobbyId}/>
         </div>
       );
     }
     if (this.state.waiting) {
-      <div id="playarea">
+      return(<div id="playarea">
         Waiting for other players to finish
       </div>
+      );
     }
     return (
       <div id="playarea">

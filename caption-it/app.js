@@ -356,12 +356,12 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
     var db = database.db('cloudtek');
     var imageId = validator.escape(req.body.imageId);
     var caption = validator.escape(req.body.caption);
-    // var lobbyId = req.params.lobbyId;
+    var lobbyId = validator.escape(req.body.lobbyId);
     var author = req.session.username;
     //upload a caption to the database (idk which table yet)
     //it should be formatted as follows:
     // { "caption": "caption", "lobbyID": "lobbyID", "imageID": "imageID"}
-    db.collection('captions').insertOne({caption : caption, imageId : imageId}, function(err, entry) {
+    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());

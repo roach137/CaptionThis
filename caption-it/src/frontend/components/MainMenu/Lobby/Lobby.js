@@ -14,6 +14,7 @@ class Lobby extends Component {
     }
 
     this.startGame = this.startGame.bind(this);
+    this.startGame_callback = this.startGame_callback.bind(this);
     // this.displayPlayers = this.displayPlayers.bind(this);
     // this.displayPlayers_callback = this.displayPlayers_callback.bind(this);
   }
@@ -40,7 +41,19 @@ class Lobby extends Component {
   // }
 
   startGame() {
-    socket.emit('start', {room : this.props.lobbyId, msg : "Starting Game"});
+    if (getCurrentUser() === this.props.host) {
+      getPlayers(this.props.lobbyId, this.startGame_callback);
+    }
+  }
+
+  startGame_callback(err, res) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (getCurrentUser() === res[0]) {
+      socket.emit('start', {room : this.props.lobbyId, msg : "Starting Game"});
+    }
   }
 
 

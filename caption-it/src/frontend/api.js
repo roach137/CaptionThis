@@ -87,6 +87,6 @@ export function getLobbies(callback) {
   send('GET', '/api/lobbies/', null, callback);
 }
 
-export function addCaption(caption, imageId, callback) {
-  send('POST', '/api/captions/', {caption : caption, imageId : imageId}, callback);
+export function addCaption(caption, imageId, lobbyId, callback) {
+  send('POST', '/api/captions/', {caption : caption, imageId : imageId, lobbyId : lobbyId}, callback);
 }

@@ -7,6 +7,7 @@ import '../../style/components/MainMenu/GamePage.css'
 class GamePage extends Component {
   constructor(props){
     super(props);
+    this.submitCounter = 0;
     this.state = {
         uploadImage : true
     };
@@ -25,7 +26,7 @@ class GamePage extends Component {
       }
       return <div>Now waiting for players to submit their captions</div>
     }
-    return <PlayArea socket={this.props.socket}/>;
+    return <PlayArea socket={this.props.socket} lobbyId={this.props.lobbyId}/>;
   }
 }
 export default GamePage;
