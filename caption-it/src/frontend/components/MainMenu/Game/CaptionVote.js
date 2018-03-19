@@ -7,6 +7,7 @@ class CaptionVote extends React.Component {
     this.state = {
       captions : []
     }
+    this.getCaption_callback = this.getCaption_callback.bind(this);
   }
 
   componentWillMount() {
@@ -25,9 +26,11 @@ class CaptionVote extends React.Component {
 
   render() {
     var captions = [];
+    console.log(this.state.captions);
     for (var i = 0; i < this.state.captions.length; i++) {
-      captions.push(<button id={this.state.captions[i]._id}></button>)
+      captions.push(<button key={this.state.captions[i]._id} id={this.state.captions[i]._id}>{this.state.captions[i].caption}</button>)
     }
+    console.log(captions);
     return <div>{captions}</div>;
   }
 }

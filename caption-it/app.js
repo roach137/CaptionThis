@@ -431,10 +431,10 @@ app.get('/api/images/:id/captions/', function(req, res, next) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
     var imageId = req.params.id;
-    db.collection('captions').find({imageId: imageId}).toArray(function (err, entry) {
+    db.collection('captions').find({imageId: imageId}).toArray(function(err, entry) {
       if (entry) {
-        console.log(entry);
-        return entry;
+        res.status(200);
+        return res.json(entry);
       }
     });
   })
