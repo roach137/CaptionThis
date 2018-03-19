@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 // import { Switch, HashRouter, Route } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+// import createHistory from 'history/createBrowserHistory';
 // import {Router, Route, Switch} from 'react-router';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 

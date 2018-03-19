@@ -352,24 +352,24 @@ app.post('/api/images/', isAuthenticated, upload.single('file'), function (req,r
 
 //post a caption for an image given the ID for the image
 //Captions will link to image using imageId
-app.post('/api/caption/:id/', sanitizeContent, isAuthenticated, function (req, res, next) {
+app.post('/api/captions/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
-    var imageId = req.params.id;
-    var caption = req.params.caption;
-    var lobbyId = req.params.lobbyId;
+    var imageId = validator.escape(req.body.imageId);
+    var caption = validator.escape(req.body.caption);
+    // var lobbyId = req.params.lobbyId;
     var author = req.session.username;
     //upload a caption to the database (idk which table yet)
     //it should be formatted as follows:
     // { "caption": "caption", "lobbyID": "lobbyID", "imageID": "imageID"}
-    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId : lobbyId}, function(err, entry) {
+    db.collection('captions').insertOne({caption : caption, imageId : imageId}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
       }
       res.status(200);
-      return res.json("Caption " + caption + " for " +imageId+ " in lobby " + lobbyId +  " posted successfully.");
+      return res.json("Caption " + caption + " for image " + imageId +  " posted successfully.");
     });
   });
 });

@@ -86,3 +86,7 @@ export function joinLobby(lobbyId, username, callback) {
 export function getLobbies(callback) {
   send('GET', '/api/lobbies/', null, callback);
 }
+
+export function addCaption(caption, imageId, callback) {
+  send('POST', '/api/captions/', {caption : caption, imageId : imageId}, callback);
+}

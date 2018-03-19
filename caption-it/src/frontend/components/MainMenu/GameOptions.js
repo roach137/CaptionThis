@@ -41,7 +41,7 @@ class GameOptions extends React.Component {
     if (this.state.destination === "lobbiesTable") {
       return(<LobbiesTable/>);
     }
-    if (this.state.lobbyId != '') {
+    if (this.state.lobbyId !== '') {
       return(<Lobby lobbyId={this.state.lobbyId} host={getCurrentUser()}/>);
     }
 

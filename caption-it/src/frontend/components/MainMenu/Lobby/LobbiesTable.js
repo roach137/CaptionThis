@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import LobbyRow from './LobbyRow';
 import Lobby from './Lobby';
-import { getLobbies, joinLobby, getCurrentUser } from '../../../api';
+import { getLobbies } from '../../../api';
 
 class LobbiesTable extends React.Component {
   constructor(props) {
