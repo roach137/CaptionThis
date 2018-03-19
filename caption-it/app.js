@@ -426,15 +426,15 @@ app.patch('api/captions/:id/', isAuthenticated, function (req, res, next) {
 
 //Get commands
 //Get the captions associated with an image ID
-app.get('api/images/:id/captions/', function(req, res, next) {
+app.get('/api/images/:id/captions/', function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
-    var db = databasedb('cloudtek');
+    var db = database.db('cloudtek');
     var imageId = req.params.id;
-    db.collection('captions').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
-      console.log(entry);
+    db.collection('captions').find({imageId: imageId}).toArray(function (err, entry) {
       if (entry) {
-        return entry.toArray();
+        console.log(entry);
+        return entry;
       }
     });
   })
@@ -444,7 +444,7 @@ app.get('api/images/:id/captions/', function(req, res, next) {
 app.get('api/lobbies/', function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
-    var db = databasedb('cloudtek');
+    var db = database.db('cloudtek');
     var imageId = req.params.id;
     db.collection('lobbies').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
       console.log(entry);

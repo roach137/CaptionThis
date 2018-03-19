@@ -15,7 +15,7 @@ class MakeCaption extends React.Component {
     e.preventDefault();
     var caption = document.querySelector('#caption-text').value;
     console.log(caption);
-    var imageId = "PLACEHOLDER";
+    var imageId = this.props.imageId;
     addCaption(caption, imageId, this.props.lobbyId, this.submitCaptionHandler_callback);
   }
 
