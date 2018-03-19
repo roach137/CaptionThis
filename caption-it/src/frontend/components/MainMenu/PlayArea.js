@@ -1,6 +1,7 @@
 import React from 'react';
 import MakeCaption from './Game/MakeCaption';
 import CaptionVote from './Game/CaptionVote';
+import Winner from './Game/Winner';
 
 class PlayArea extends React.Component {
   constructor(props){
@@ -9,8 +10,10 @@ class PlayArea extends React.Component {
       submitCaption : false,
       waiting : false,
       voting : false,
+      endRound: false,
       imageId : null
     };
+    this.imageId = null;
 
     this.onCaptionSubmit = this.onCaptionSubmit.bind(this);
   }
@@ -18,18 +21,22 @@ class PlayArea extends React.Component {
   componentWillMount(){
     var self = this;
     this.props.socket.on('uploaded image', function(data){
-      self.setState({submitCaption : true, waiting : false, voting : false, imageId : data});
+      this.imageId = data;
+      self.setState({submitCaption : true, waiting : false, voting : false, endRound: false, imageId : data});
     });
     this.props.socket.on('voting begins', function(data) {
-      self.setState({submitCaption: false, waiting: false, voting: true});
+      self.setState({submitCaption: false, waiting: false, voting: true, endRound: false, imageId : this.imageId});
+    });
+    this.props.socket.on('voting complete', function(data) {
+      self.setState({submitCaption: false, waiting: false, voting: false, endRound: true, imageId : this.imageId});
     });
   }
 
   onCaptionSubmit(){
-    this.setState({submitCaption : false, waiting : true, voting : false});
+    this.setState({submitCaption : false, waiting : true, voting : false, endRound: false});
   }
 
-  render(){
+  render() {
     var link = '/api/images/' + this.props.imageId + '/image/'
     if (this.state.submitCaption) {
       console.log(this.imageId);
@@ -45,10 +52,15 @@ class PlayArea extends React.Component {
       </div>
       );
     }
+    if (this.state.endRound) {
+      return (<div id="playarea">
+                <Winner imageId={this.state.imageId}/>
+              </div>);
+    }
 
     if (this.state.voting) {
+      console.log(this.state.imageId);
       return(<div id="playarea">
-        <CaptionVote imageId={this.state.imageId}/>
       </div>
       );
     }

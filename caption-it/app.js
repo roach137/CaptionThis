@@ -431,7 +431,7 @@ app.get('api/images/:id/captions/', function(req, res, next) {
     if (err) return res.status(500).end(err.toString());
     var db = databasedb('cloudtek');
     var imageId = req.params.id;
-    db.collection('captions').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
+    db.collection('captions').find({imageId: imageId}, {caption:1, author:1}).sort({score: -1}).exec(function (err, entry) {
       console.log(entry);
       if (entry) {
         return entry.toArray();
@@ -527,11 +527,12 @@ io.on('connection', function(socket) {
      socket.nsp.to(data.room).emit('uploaded image', data.imageId);
    });
    socket.on('voting begins', function(data) {
-     socket.nsp.to(data.room).emit('voting begins', null);
+     socket.nsp.to(data.room).emit('voting begins', data.imageId);
    });
+   socket.on('voting complete', function(data) {
+     socket.nsp.to(data.room).emit('voting complete', data.imageId);
+   })
 });
-
-
 
 app.get('/*', function(req, res, next){
   console.log("going to a page");
