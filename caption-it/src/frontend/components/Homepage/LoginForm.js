@@ -8,8 +8,11 @@ class LoginForm extends Component {
     var username = document.querySelector('form [name=username]').value;
     var password = document.querySelector('form [name=password]').value;
     signup(username, password, function(err, res){
-      if (err) console.log(err);
-      //TODO: go to game page
+      if (err) {
+        console.log(err);
+        return;
+      }
+      window.location = '/mainmenu';
     });
   }
 
@@ -22,7 +25,7 @@ class LoginForm extends Component {
         console.log(err);
       } else {
         window.location = '/mainmenu';
-      }      
+      }
     });
   }
 

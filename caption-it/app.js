@@ -185,9 +185,30 @@ app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
         return res.status(404).end("Image " + imageId + " does not exist");
       }
       console.log(entry);
-      var image = entry;
-      res.setHeader('Content-Type', image.mimetype);
-      res.sendFile(image.path);
+      return res.json(entry);
+    });
+  });
+});
+
+/*Get image file with certain id*/
+app.get('/api/images/:id/image/', function(req, res) {
+  MongoClient.connect(url, function(err, database){
+    if (err) return res.status(500).end(err.toString());
+    var db = database.db('images');
+    db.findOne({_id : ObjectId(req.params.id)}, function(err, data) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      if (!data) {
+        database.close();
+        return res.status(404).end('image ' + req.params.id + ' does not exists\n');
+      }
+        var image = data;
+        res.status(200);
+        res.setHeader('Content-Type', image.mimetype);
+        res.sendFile(image.path, {root: __dirname});
+        database.close();
     });
   });
 });
@@ -361,7 +382,7 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
     //upload a caption to the database (idk which table yet)
     //it should be formatted as follows:
     // { "caption": "caption", "lobbyID": "lobbyID", "imageID": "imageID"}
-    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId}, function(err, entry) {
+    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId : lobbyId}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
@@ -470,8 +491,8 @@ io.on('connection', function(socket) {
      socket.nsp.to(data.room).emit('start', data.msg);
    });
 
-   socket.on('uploaded image', function(room){
-     socket.nsp.to(room).emit('uploaded image', null);
+   socket.on('uploaded image', function(data){
+     socket.nsp.to(data.room).emit('uploaded image', data.imageId);
    });
 });
 

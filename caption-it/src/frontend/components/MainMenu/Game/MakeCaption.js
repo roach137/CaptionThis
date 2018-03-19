@@ -28,6 +28,7 @@ class MakeCaption extends React.Component {
   render() {
     return (
       <div className='playerbox'>
+        <img src='/api/images/{this.props.imageId}/image/'>
         <form id='caption-form' onSubmit={this.submitCaptionHandler}>
           <textarea id='caption-text' placeholder='enter your caption here...' required></textarea>
           <button>Submit caption</button>
