@@ -1,5 +1,6 @@
 import React from 'react';
 import MakeCaption from './Game/MakeCaption';
+import CaptionVote from './Game/CaptionVote';
 
 class PlayArea extends React.Component {
   constructor(props){
@@ -44,9 +45,12 @@ class PlayArea extends React.Component {
       </div>
       );
     }
+
     if (this.state.voting) {
       return(<div id="playarea">
-      </div>)
+        <CaptionVote imageId={this.state.imageId}/>
+      </div>
+      );
     }
     return (
       <div id="playarea">

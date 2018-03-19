@@ -426,7 +426,7 @@ app.patch('api/captions/:id/', isAuthenticated, function (req, res, next) {
 
 //Get commands
 //Get the captions associated with an image ID
-app.get('api/captions/:id/', function(req, res, next) {
+app.get('api/images/:id/captions/', function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
     var db = databasedb('cloudtek');
