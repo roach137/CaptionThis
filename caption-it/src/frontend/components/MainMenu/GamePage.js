@@ -13,10 +13,14 @@ class GamePage extends Component {
     };
 
     this.onImageUpload = this.onImageUpload.bind(this);
+    this.onForceStart = this.onForceStart.bind(this);
   }
 
   onImageUpload() {
     this.setState({uploadImage : false});
+  }
+  onForceStart() {
+    this.props.socket.emit('voting begins', {room : this.props.lobbyId});
   }
 
   render() {
@@ -24,7 +28,9 @@ class GamePage extends Component {
       if (this.state.uploadImage) {
         return <UploadImage socket={this.props.socket} onUpload={this.onImageUpload} lobbyId={this.props.lobbyId}/>;
       }
-      return <div>Now waiting for players to submit their captions</div>
+      return <div class = "host_screen">Now waiting for players to submit their captions
+              <button class="host_override" onClick={this.onForceStart}>You're taking too long! (Force start voting)</button>
+            </div>
     }
     return <PlayArea socket={this.props.socket} lobbyId={this.props.lobbyId}/>;
   }

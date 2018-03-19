@@ -387,13 +387,39 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
     //upload a caption to the database (idk which table yet)
     //it should be formatted as follows:
     // { "caption": "caption", "lobbyID": "lobbyID", "imageID": "imageID"}
-    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId : lobbyId}, function(err, entry) {
+    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId : lobbyId, score: 0}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
       }
       res.status(200);
       return res.json("Caption " + caption + " for image " + imageId +  " posted successfully.");
+    });
+  });
+});
+
+
+//Voting
+app.patch('api/captions/:id/', isAuthenticated, function (req, res, next) {
+  MongoClient.connect(url, function(err, database) {
+    if (err) return res.status(500).end(err.toString());
+    var db = database.db('cloudtek');
+    db.collection('captions').findOne({_id:ObjectId(req.params.id)}, function (err, caption) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      console.log(caption);
+      if (caption) {
+        caption.score++;
+        db.collection('captions').update({_id: req.params.id}, caption, {multi: false}, function(err, success) {
+          if (err) {
+            database.close();
+            return res.status(500).end(err.toString());
+          }
+          return res.json("Successfully voted");
+        });
+      }
     });
   });
 });
@@ -499,6 +525,9 @@ io.on('connection', function(socket) {
    socket.on('uploaded image', function(data){
      console.log(data.imageId);
      socket.nsp.to(data.room).emit('uploaded image', data.imageId);
+   });
+   socket.on('voting begins', function(data) {
+     socket.nsp.to(data.room).emit('voting begins', null);
    });
 });
 

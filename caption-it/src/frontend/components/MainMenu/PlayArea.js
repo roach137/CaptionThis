@@ -19,14 +19,17 @@ class PlayArea extends React.Component {
     this.props.socket.on('uploaded image', function(data){
       self.setState({submitCaption : true, waiting : false, voting : false, imageId : data});
     });
+    this.props.socket.on('voting begins', function(data) {
+      self.setState({submitCaption: false, waiting: false, voting: true});
+    });
   }
 
   onCaptionSubmit(){
     this.setState({submitCaption : false, waiting : true, voting : false});
-
   }
 
   render(){
+    var link = '/api/images/' + this.props.imageId + '/image/'
     if (this.state.submitCaption) {
       console.log(this.imageId);
       return (
@@ -40,6 +43,10 @@ class PlayArea extends React.Component {
         Waiting for other players to finish
       </div>
       );
+    }
+    if (this.state.voting) {
+      return(<div id="playarea">
+      </div>)
     }
     return (
       <div id="playarea">

@@ -8,3 +8,18 @@
   flex-direction: column;
   justify-content: center;
 }
+
+.host_screen {
+  font-size: 18px;
+  text-align: center;
+}
+
+.host_override {
+  text-align: center;
+  font-size: 18px;
+  color: white;
+  background-color: black;
+  margin-bottom: 5px;
+  border-color: #3399ff;
+  border-radius: 5px;
+}
