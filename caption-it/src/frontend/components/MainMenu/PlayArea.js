@@ -33,7 +33,7 @@ class PlayArea extends React.Component {
   }
 
   onCaptionSubmit(){
-    this.setState({submitCaption : false, waiting : true, voting : false, endRound: false});
+    this.setState({submitCaption : false, waiting : true, voting : false, endRound: false, imageId : this.state.imageId});
   }
 
   render() {
