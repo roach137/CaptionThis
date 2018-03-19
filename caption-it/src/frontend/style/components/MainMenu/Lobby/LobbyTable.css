@@ -8,6 +8,18 @@
     margin-bottom: 10px;
 }
 
+.lobby_form {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 10px;
+}
+
+.or_break {
+    font-size: 18px;
+    padding-bottom: 10px;
+   text-align: center;
+}
+
 .lobby_button {
     text-align: center;
     font-size: 18px;

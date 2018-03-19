@@ -48,8 +48,11 @@ class GameOptions extends React.Component {
 
     return(
       <div className="buttons">
-        <textarea class="lobby_name_field" id="lobby-name" placeholder="enter lobby name"></textarea>
-        <button className="lobby_button" onClick={this.createLobby}>Host a game</button>
+        <form onSubmit = {this.createLobby} class="lobby_form">
+          <textarea class="lobby_name_field" id="lobby-name" placeholder="enter lobby name" required></textarea>
+          <button className="lobby_button">Host a game</button>
+        </form>
+        <div className="or_break"> OR </div>
         <button className="lobby_button" onClick={this.showLobbiesTable}>Join a game</button>
       </div>
     );
