@@ -20,7 +20,8 @@ class UploadImage extends React.Component {
       console.log(err)
       return;
     };
-    this.props.socket.emit('uploaded image', this.props.lobbyId);
+    console.log(res);
+    this.props.socket.emit('uploaded image', {room : this.props.lobbyId, imageId : res._id });
     this.props.onUpload();
   }
 

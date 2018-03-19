@@ -4,6 +4,7 @@ import MakeCaption from './Game/MakeCaption';
 class PlayArea extends React.Component {
   constructor(props){
     super(props);
+    this.imageId = null;
     this.state = {
       submitCaption : false,
       waiting : false,
@@ -16,6 +17,7 @@ class PlayArea extends React.Component {
   componentWillMount(){
     var self = this;
     this.props.socket.on('uploaded image', function(data){
+      this.imageId = data;
       self.setState({submitCaption : true, waiting : false, voting : false});
     });
   }
@@ -29,7 +31,7 @@ class PlayArea extends React.Component {
     if (this.state.submitCaption) {
       return (
         <div id="playarea">
-          <MakeCaption captionHandler={this.onCaptionSubmit} socket={this.props.socket} lobbyId={this.props.lobbyId}/>
+          <MakeCaption captionHandler={this.onCaptionSubmit} socket={this.props.socket} imageId={this.imageId} lobbyId={this.props.lobbyId}/>
         </div>
       );
     }
