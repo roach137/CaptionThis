@@ -195,7 +195,7 @@ app.get('/api/images/:id/image/', function(req, res) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
-    db.collection('images').findOne({_id : ObjectId(req.params.id)}, function(err, data) {
+    db.collection('images').findOne({_id : req.params.id}, function(err, data) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
@@ -256,7 +256,7 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
     console.log("finding game with _id " + req.params.id);
-    db.collection('lobbies').findOne({_id:ObjectId(req.params.id)}, function (err, lobby) {
+    db.collection('lobbies').findOne({_id:req.params.id}, function (err, lobby) {
       if (lobby) {
         var username = req.body.username;
         //insert the player into the first open player slot
@@ -266,7 +266,7 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
         }
         lobby.players.push(username);
         //actually update the lobby
-        db.collection('lobbies').update({_id: ObjectId(req.params.id)}, lobby, {multi: false}, function(err, success) {
+        db.collection('lobbies').update({_id: req.params.id}, lobby, {multi: false}, function(err, success) {
           if (err) {
             database.close();
             return res.status(500).end(err.toString());
