@@ -6,7 +6,8 @@ class GamePage extends Component {
   addImage(e) {
     e.preventDefault();
     var file = document.querySelector('form [name=file]').files[0];
-    addImage(file, function(err, res) {
+    var lobbyId = 20;
+    addImage(lobbyId, file, function(err, res) {
       if (err) console.log(err);
       console.log(res);
     });

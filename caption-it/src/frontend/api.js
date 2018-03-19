@@ -68,6 +68,6 @@ export function signin(username, password, callback) {
   send('POST', '/signin/', {username : username, password : password}, callback);
 }
 
-export function addImage(file, callback) {
-  sendFiles('POST', '/api/images/', {file : file}, callback);
+export function addImage(lobbyId, file, callback) {
+  sendFiles('POST', '/api/images/', {lobbyId : lobbyId, file : file}, callback);
 }

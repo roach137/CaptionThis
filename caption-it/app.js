@@ -21,7 +21,7 @@ const validator = require('validator');
 const cookie = require('cookie');
 const session = require('express-session');
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/cloudtek";
+var url = "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test";
 var upload = multer({ dest: 'uploads/'});
 
 const bodyParser = require('body-parser');
@@ -165,6 +165,29 @@ app.post('/signup/', function(req, res, next) {
   });
 })
 
+app.get('/api/images/:id/', function(req, res, next) {
+  console.log("getting image");
+  MongoClient.connect(url, function(err, database) {
+    if (err) {
+      database.close();
+      return res.status(500).end(err.toString());
+    }
+    var db = database.db('images');
+    var imageId = req.params.id;
+    db.collection('images').findOne({_id : imageId}, function(err, entry) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      if (!entry) {
+        database.close();
+        return res.status(404).end("Image " + imageId + " does not exist");
+      }
+      console.log(entry);
+    });
+  });
+});
+
 /*
 LIST OF DATABASE TABLES:
 users: the list of users
@@ -186,8 +209,10 @@ app.post('/api/images/', upload.single('file'), function (req,res,next) {
   MongoClient.connect(url, function(err, database) {
     //We're probably better off copy pasting your code from A2 or A3 (since your mark is higher than mine)
     var db = database.db("images");
+    var lobbyId = req.body.lobbyId;
     var img = req.file;
     // console.log(img);
+    img = Object.assign({lobbyId : lobbyId}, img);
     db.collection('images').insertOne(img, function(err, entry) {
       if (err) return res.status(500).end(err.toString());
       res.status(200);
@@ -200,7 +225,7 @@ app.post('/api/images/', upload.single('file'), function (req,res,next) {
 });
 
 //post a caption for an image given the ID for the image
-//I'm not sure if it's better to use image ID or lobby ID here, whichever you think is better (we could do both as well)
+//Captions will link to image using imageId
 app.post('/api/caption/:id/', sanitizeContent, isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
@@ -259,6 +284,11 @@ io.on('connection', function(socket) {
      console.log("The message is " + msg);
      io.emit('testresp', "Hello from server to " + socket.id);
    })
+});
+
+app.get('/*', function(req, res, next){
+  console.log("going to a page");
+  res.sendFile('index.html', {root: __dirname + '/build'});
 });
 
 server.listen(PORT, function (err) {
