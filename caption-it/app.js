@@ -194,8 +194,8 @@ app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
 app.get('/api/images/:id/image/', function(req, res) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
-    var db = database.db('images');
-    db.findOne({_id : ObjectId(req.params.id)}, function(err, data) {
+    var db = database.db('cloudtek');
+    db.collection('images').findOne({_id : ObjectId(req.params.id)}, function(err, data) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
