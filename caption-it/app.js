@@ -361,7 +361,7 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
     //upload a caption to the database (idk which table yet)
     //it should be formatted as follows:
     // { "caption": "caption", "lobbyID": "lobbyID", "imageID": "imageID"}
-    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId}, function(err, entry) {
+    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId : lobbyId}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
