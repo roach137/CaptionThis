@@ -22,7 +22,7 @@ class LobbyRow extends React.Component {
 
   render() {
     // return(<div id={this.props.key} onClick={this.joinGame}>{this.props.name}</div>)
-    return(<button id={this.props.id} host={this.props.host} onClick={this.joinLobby}>{this.props.name}</button>)
+    return(<button id={this.props.id} className="lobby_button" host={this.props.host} onClick={this.joinLobby}>{this.props.name}</button>)
   }
 }
 export default LobbyRow;

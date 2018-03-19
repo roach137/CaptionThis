@@ -1,0 +1,26 @@
+.lobby_table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.lobby_button {
+    text-align: center;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    margin-bottom: 5px;
+    border-color: #3399ff;
+    border-radius: 5px;
+}
+
+.lobby_name_field {
+    border-radius: 5px;
+    text-align: center;
+    font-size:18;
+    border-color: #3399ff;
+}
