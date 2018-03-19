@@ -24,3 +24,13 @@
     font-size:18;
     border-color: #3399ff;
 }
+
+.players {
+    border-radius: 2px;
+    border-color: #3399ff;
+    font-size: 18;
+}
+
+.section_title {
+    font-weight: bold;
+}

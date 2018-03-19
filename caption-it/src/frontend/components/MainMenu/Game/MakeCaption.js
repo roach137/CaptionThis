@@ -1,6 +1,8 @@
 import React from 'react';
 import {addCaption} from '../../../api';
 import '../../../style/components/MainMenu/Game/PlayerBox.css';
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
+
 
 class MakeCaption extends React.Component {
   constructor(props){
@@ -31,7 +33,7 @@ class MakeCaption extends React.Component {
         <img src='/api/images/{this.props.imageId}/image/'/>
         <form id='caption-form' onSubmit={this.submitCaptionHandler}>
           <textarea id='caption-text' placeholder='enter your caption here...' required></textarea>
-          <button>Submit caption</button>
+          <button class = "lobby_button">Submit caption</button>
         </form>
       </div>
     );

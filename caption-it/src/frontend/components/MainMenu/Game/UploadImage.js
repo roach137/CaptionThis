@@ -1,5 +1,6 @@
 import React from 'react';
 import { addImage } from '../../../api';
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
 class UploadImage extends React.Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class UploadImage extends React.Component {
     return(<div>
             <form id="submit-img" className="img-form" onSubmit={this.addImage}>
               <input id="img-file" type="file" name="file" accept="image/*" required/>
-              <button type="submit" id="submit-btn">Submit</button>
+              <button class="lobby_button" type="submit" id="submit-btn">Submit</button>
             </form>
             <div id="players"></div>
           </div>

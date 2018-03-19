@@ -3,6 +3,7 @@ import SocketClient from "socket.io-client";
 import { getPlayers, getCurrentUser } from '../../../api';
 import GamePage from '../GamePage'
 import '../../../style/components/MainMenu/HostGame.css'
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
 const socket = SocketClient("https://localhost:5000");
 
@@ -63,9 +64,11 @@ class Lobby extends Component {
     }
     return(
       <div id="host-game-menu">
-        <button className="btn" onClick={this.startGame}>Start game</button>
-        <div id="player-list">
+        <button className="lobby_button" onClick={this.startGame}>Start game</button>
+        <div id="player-list" class="players">
+          <div class="section_title">Lobby ID: </div>
           <div>{this.props.lobbyId}</div>
+          <div class="section_title">Players: </div>
           <div>{this.props.host}</div>
         </div>
       </div>
