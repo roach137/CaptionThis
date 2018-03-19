@@ -17,7 +17,8 @@ class GameOptions extends React.Component {
     this.showLobbiesTable = this.showLobbiesTable.bind(this);
   }
 
-  createLobby() {
+  createLobby(e) {
+    e.preventDefault();
     console.log("creating lobby");
     var name = document.querySelector('#lobby-name').value;
     createLobby(name, getCurrentUser(), this.createLobby_callback);
