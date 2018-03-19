@@ -3,6 +3,7 @@ import { createLobby, getCurrentUser } from '../../api'
 import Lobby from './Lobby/Lobby';
 import LobbiesTable from './Lobby/LobbiesTable';
 import '../../style/components/MainMenu/GameOptions.css';
+import '../../style/components/MainMenu/Lobby/LobbyTable.css'
 
 class GameOptions extends React.Component {
   constructor(props) {
@@ -47,9 +48,9 @@ class GameOptions extends React.Component {
 
     return(
       <div className="buttons">
-        <textarea id="lobby-name" placeholder="enter lobby name"></textarea>
-        <button className="btn" onClick={this.createLobby}>Host a game</button>
-        <button className="btn" onClick={this.showLobbiesTable}>Join a game</button>
+        <textarea class="lobby_name_field" id="lobby-name" placeholder="enter lobby name"></textarea>
+        <button className="lobby_button" onClick={this.createLobby}>Host a game</button>
+        <button className="lobby_button" onClick={this.showLobbiesTable}>Join a game</button>
       </div>
     );
   }

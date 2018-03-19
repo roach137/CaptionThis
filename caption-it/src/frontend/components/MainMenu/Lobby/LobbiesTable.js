@@ -2,6 +2,7 @@ import React from 'react';
 import LobbyRow from './LobbyRow';
 import Lobby from './Lobby';
 import { getLobbies } from '../../../api';
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
 class LobbiesTable extends React.Component {
   constructor(props) {
@@ -53,8 +54,8 @@ class LobbiesTable extends React.Component {
       return (<Lobby lobbyId={this.state.selectedLobby.lobbyId} host={this.state.selectedLobby.host}/>);
     }
     return (<div>
-      <button onClick={this.getLobbies}>Click to get lobbies</button>
-    <div>{this.state.lobbies}</div>
+      <button class="lobby_button" onClick={this.getLobbies}>Click to refresh lobbies</button>
+    <div class="lobby_table">{this.state.lobbies}</div>
     </div>
   );
   }
