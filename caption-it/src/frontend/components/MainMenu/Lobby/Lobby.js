@@ -23,7 +23,6 @@ class Lobby extends Component {
     socket.emit('room', this.props.lobbyId);
 
     socket.on('start', function(message) {
-      // console.log(message);
       self.setState({startGame : true});
     })
   }

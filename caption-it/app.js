@@ -335,15 +335,13 @@ app.post('/api/images/', isAuthenticated, upload.single('file'), function (req,r
     var db = database.db("cloudtek");
     var lobbyId = req.body.lobbyId;
     var img = req.file;
-    img.author = req.body.author;
+    img.author = req.session.username;
     img.lobbyId = req.body.lobbyId;
     // console.log(img);
-    img = Object.assign({lobbyId : lobbyId}, img);
     db.collection('images').insertOne(img, function(err, entry) {
       if (err) return res.status(500).end(err.toString());
       res.status(200);
-
-      console.log(entry.ops[0]._id);
+      // console.log(entry.ops[0]._id);
       var result = {_id : entry.ops[0]._id}
       return res.json(result);
     })
@@ -460,8 +458,6 @@ app.delete('/api/images/:id', function (req, res, next) {
 
 //Whenever someone connects this gets executed
 io.on('connection', function(socket) {
-   console.log('A user connected');
-
    socket.on('room', function(room) {
      socket.join(room);
    });
@@ -472,6 +468,10 @@ io.on('connection', function(socket) {
    socket.on('start', function(data){
      console.log(io.sockets.clients());
      socket.nsp.to(data.room).emit('start', data.msg);
+   });
+
+   socket.on('uploaded image', function(room){
+     socket.nsp.to(room).emit('uploaded image', null);
    });
 });
 
