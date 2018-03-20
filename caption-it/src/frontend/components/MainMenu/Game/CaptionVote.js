@@ -5,7 +5,8 @@ class CaptionVote extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      captions : []
+      captions : [],
+      captionElmts : []
     }
     this.getCaption_callback = this.getCaption_callback.bind(this);
     this.winner = null;
@@ -13,11 +14,11 @@ class CaptionVote extends React.Component {
   }
 
   componentWillMount() {
-    console.log(this.props.imageId);
+    // console.log(this.props.imageId);
     getCaptions(this.props.imageId, this.getCaption_callback);
   }
 
-  onSelection(caption) {
+  onSelection = (caption) => (e) => {
     //get the caption text from the function call
     console.log(caption);
     this.winner = caption;
@@ -33,23 +34,24 @@ class CaptionVote extends React.Component {
       return;
     }
     console.log(res);
-    this.setState({captions : res});
+    var elmts = [];
+    for (var i = 0; i < res.length; i++) {
+      var id = res[i]._id;
+      var caption_text = res[i].caption;
+      // console.log(this.state.captions[i]._id, id);
+      console.log(caption_text);
+      elmts.push(
+      <button key={id}
+        id={id}
+        onClick={this.onSelection(caption_text)}>{caption_text}</button>
+      );
+    }
+    console.log(elmts);
+    this.setState({captions : res, captionElmts : elmts});
   }
 
   render() {
-    var captions = [];
-    console.log(this.state.captions);
-    for (var i = 0; i < this.state.captions.length; i++) {
-      var id = this.state.captions[i]._id
-      var caption_text = this.state.captions[i].caption
-      console.log(this.state.captions[i]._id, id);
-      captions.push(
-      <button key={id}
-       id={id} 
-       onClick={() => this.onSelection(caption_text)}>{this.state.captions[i].caption}</button>)
-    }
-    //console.log(captions);
-    return <div>{captions}</div>;
+    return <div>{this.state.captionElmts}</div>;
   }
 }
 export default CaptionVote;
