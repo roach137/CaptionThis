@@ -61,7 +61,7 @@ class PlayArea extends React.Component {
     if (this.state.voting) {
       console.log(this.state.imageId);
       return(<div id="playarea">
-            <CaptionVote imageId={this.state.imageId}/>
+            Waiting for the host's selection.
       </div>
       );
     }

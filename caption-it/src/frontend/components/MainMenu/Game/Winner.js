@@ -8,7 +8,7 @@ class Winner extends React.Component {
     super(props);
     this.getCaption_callback = this.getCaption_callback.bind(this);
     this.state = {
-      caption: []
+      caption: null
     }
   }
   
@@ -28,15 +28,9 @@ class Winner extends React.Component {
 
   render() {
     var link = '/api/images/' + this.props.imageId + '/image/';
-    console.log(this.state.caption, this.state.caption[0]);
-    var caption_text = null;
-    if (this.state.caption[0]) {
-      caption_text = this.state.caption[0].caption;
-      console.log(caption_text);
-    }
     return <div class="winner">
               <div class="winner_title_text"> Winner! </div>
-              <div class="caption_text">{caption_text}</div>
+              <div class="caption_text">{this.props.caption}</div>
               <img src={link}></img>
            </div>
   }

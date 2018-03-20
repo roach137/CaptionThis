@@ -3,6 +3,7 @@ import { getCurrentUser, addCaption } from '../../api';
 import PlayArea from './PlayArea'
 import UploadImage from './Game/UploadImage'
 import Winner from './Game/Winner';
+import CaptionVote from './Game/CaptionVote';
 import '../../style/components/MainMenu/GamePage.css'
 
 class GamePage extends Component {
@@ -16,11 +17,10 @@ class GamePage extends Component {
         waiting: false,
         imageId: null
     };
-    this.imageId = null;
+    this.winner = null;
 
     this.onImageUpload = this.onImageUpload.bind(this);
     this.onForceStart = this.onForceStart.bind(this);
-    this.onForceVotes = this.onForceVotes.bind(this);
   }
 
   componentWillMount() {
@@ -34,7 +34,7 @@ class GamePage extends Component {
       self.setState({uploadImage: false, voting: true, waiting: false, endRound: false, imageId: data});
     });
     this.props.socket.on('voting complete', function(data){
-      console.log(data);
+      console.log("vote complete", data);
       self.setState({uploadImage: false, voting: false, waiting: false, endRound: true, imageId: data});
     });
   }
@@ -47,11 +47,11 @@ class GamePage extends Component {
     console.log("emitting", this.state.imageId);
     console.log(this.state);
   }
-  onForceVotes() {
+  /*onForceVotes() {
     this.props.socket.emit('voting complete', {room: this.props.lobbyId, imageId: this.state.imageId});
     console.log("emitting", this.state.imageId, this.props.lobbyId);
     console.log(this.state);
-  }
+  }*/
 
   render() {
     if (getCurrentUser() === this.props.host) {
@@ -64,14 +64,14 @@ class GamePage extends Component {
               </div>
       }
       if (this.state.voting) {
-        return <div class = "host_screen">Waiting for votes!
-                <button class="host_override" onClick={this.onForceVotes}>Yeah we're done here. (Force end voting)</button>
+        return <div class = "host_screen">Pick your favourite!
+                <CaptionVote imageId={this.state.imageId} lobbyId={this.props.lobbyId} socket={this.props.socket}/>
               </div>
       }
       if (this.state.endRound) {
         //Winning image with caption
         return <div className='host_screen'>
-                  <Winner imageId={this.state.imageId}/>
+                  <Winner imageId={this.state.imageId} caption={this.winner}/>
                   <button class="host_override">Another!</button>
                </div>
       }

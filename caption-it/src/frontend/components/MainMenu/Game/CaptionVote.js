@@ -1,6 +1,5 @@
 import React from 'react';
 import { getCaptions } from '../../../api';
-import { vote } from '../../../api';
 
 class CaptionVote extends React.Component {
   constructor(props) {
@@ -9,8 +8,8 @@ class CaptionVote extends React.Component {
       captions : []
     }
     this.getCaption_callback = this.getCaption_callback.bind(this);
-    this.vote_callback = this.vote_callback.bind(this);
-    this.vote = this.vote.bind(this);
+    this.winner = null;
+    this.onSelection = this.onSelection.bind(this);
   }
 
   componentWillMount() {
@@ -18,20 +17,15 @@ class CaptionVote extends React.Component {
     getCaptions(this.props.imageId, this.getCaption_callback);
   }
 
-  getCaption_callback(err, res) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log(res);
-    this.setState({captions : res});
-  }
-  
-  vote(captionId) {
-    vote(captionId, this.vote_callback);
+  onSelection(caption) {
+    //get the caption text
+    console.log(caption);
+    this.winner = caption;
+    this.props.socket.emit('voting complete', {room: this.props.lobbyId, imageId: this.state.imageId});
+    console.log("emitting", this.props.imageId, this.props.lobbyId, this.winner);
   }
 
-  vote_callback(err, res) {
+  getCaption_callback(err, res) {
     if (err) {
       console.log(err);
       return;
@@ -44,10 +38,15 @@ class CaptionVote extends React.Component {
     var captions = [];
     console.log(this.state.captions);
     for (var i = 0; i < this.state.captions.length; i++) {
+      var id = this.state.captions[i]._id
+      var caption_text = this.state.captions[i].caption
+      console.log(this.state.captions[i]._id, id);
       captions.push(
-      <button key={this.state.captions[i]._id} id={this.state.captions[i]._id}>{this.state.captions[i].caption}</button>)
+      <button key={id}
+       id={id} 
+       onClick={() => this.onSelection(caption_text)}>{this.state.captions[i].caption}</button>)
     }
-    console.log(captions);
+    //console.log(captions);
     return <div>{captions}</div>;
   }
 }
