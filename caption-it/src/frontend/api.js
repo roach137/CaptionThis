@@ -83,6 +83,10 @@ export function joinLobby(lobbyId, username, callback) {
   send('PATCH', '/api/lobbies/' + lobbyId + '/', {username : username}, callback);
 }
 
+export function vote(captionId, callback) {
+  send('PATCH', '/api/captions/'+captionId+'/', callback);
+}
+
 export function getLobbies(callback) {
   send('GET', '/api/lobbies/', null, callback);
 }

@@ -1,19 +1,20 @@
 import React from 'react';
 import { getCaptions } from '../../../api';
 import '../../../style/components/MainMenu/GamePage.css'
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
 class Winner extends React.Component {
   constructor(props) {
     super(props);
-    this.getCaption = this.getCaption.bind(this);
     this.getCaption_callback = this.getCaption_callback.bind(this);
+    this.state = {
+      caption: []
+    }
   }
   
-  getCaption() {
-    var caption_link = '/api/images/'+this.props.imageId+'/captions/';
-    console.log(caption_link);
-    var all_captions = getCaptions(this.props.imageId, this.getCaption_callback);
-    console.log(all_captions);
+  componentWillMount() {
+    console.log(this.props.imageId);
+    getCaptions(this.props.imageId, this.getCaption_callback);
   }
 
   getCaption_callback(err, res) {
@@ -21,15 +22,21 @@ class Winner extends React.Component {
       console.log(err);
       return;
     }
-    this.props.captionHandler();
+    console.log(res);
+    this.setState({caption: res});
   }
 
   render() {
-    var caption_text = this.getCaption();
     var link = '/api/images/' + this.props.imageId + '/image/';
+    console.log(this.state.caption, this.state.caption[0]);
+    var caption_text = null;
+    if (this.state.caption[0]) {
+      caption_text = this.state.caption[0].caption;
+      console.log(caption_text);
+    }
     return <div class="winner">
               <div class="winner_title_text"> Winner! </div>
-              <div class="caption_text"> {caption_text}</div>
+              <div class="caption_text">{caption_text}</div>
               <img src={link}></img>
            </div>
   }

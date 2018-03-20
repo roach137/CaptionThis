@@ -68,7 +68,7 @@ class Lobby extends Component {
         <div id="player-list" class="players">
           <div class="section_title">Lobby ID: </div>
           <div>{this.props.lobbyId}</div>
-          <div class="section_title">Players: </div>
+          <div class="section_title">Host: </div>
           <div>{this.props.host}</div>
         </div>
       </div>
