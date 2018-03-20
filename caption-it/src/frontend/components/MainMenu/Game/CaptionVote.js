@@ -18,10 +18,12 @@ class CaptionVote extends React.Component {
   }
 
   onSelection(caption) {
-    //get the caption text
+    //get the caption text from the function call
     console.log(caption);
     this.winner = caption;
-    this.props.socket.emit('voting complete', {room: this.props.lobbyId, imageId: this.state.imageId});
+    //emit the data (THIS DOES NOT WORK, it only emits the lobby ID, I don't know why)
+    var data = {room: this.props.lobbyId, imageId: this.props.imageId, caption: this.winner};
+    this.props.socket.emit('voting complete', data);
     console.log("emitting", this.props.imageId, this.props.lobbyId, this.winner);
   }
 

@@ -11,9 +11,11 @@ class PlayArea extends React.Component {
       waiting : false,
       voting : false,
       endRound: false,
-      imageId : null
+      imageId : null,
+      winner: null
     };
     this.imageId = null;
+    this.winner = null;
 
     this.onCaptionSubmit = this.onCaptionSubmit.bind(this);
   }
@@ -28,7 +30,7 @@ class PlayArea extends React.Component {
       self.setState({submitCaption: false, waiting: false, voting: true, endRound: false, imageId : data});
     });
     this.props.socket.on('voting complete', function(data) {
-      self.setState({submitCaption: false, waiting: false, voting: false, endRound: true, imageId : data});
+      self.setState({submitCaption: false, waiting: false, voting: false, endRound: true, imageId : data.imageId, winner: data.caption});
     });
   }
 
@@ -54,7 +56,7 @@ class PlayArea extends React.Component {
     }
     if (this.state.endRound) {
       return (<div id="playarea">
-                <Winner imageId={this.state.imageId}/>
+                <Winner imageId={this.state.imageId} caption={this.state.winner}/>
               </div>);
     }
 

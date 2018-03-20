@@ -524,16 +524,16 @@ io.on('connection', function(socket) {
    });
 
    socket.on('uploaded image', function(data){
-     console.log(data.imageId);
+     console.log("upload", data);
      socket.nsp.to(data.room).emit('uploaded image', data.imageId);
    });
    socket.on('voting begins', function(data) {
-    console.log(data.imageId);
+    console.log("begin", data);
      socket.nsp.to(data.room).emit('voting begins', data.imageId);
    });
    socket.on('voting complete', function(data) {
     console.log("full data ", data);
-     socket.nsp.to(data.room).emit('voting complete', data.imageId);
+     socket.nsp.to(data.room).emit('voting complete', data);
    })
 });
 

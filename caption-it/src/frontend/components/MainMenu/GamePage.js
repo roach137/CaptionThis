@@ -15,9 +15,9 @@ class GamePage extends Component {
         voting: false,
         endRound: false,
         waiting: false,
-        imageId: null
+        imageId: null,
+        winner: null
     };
-    this.winner = null;
 
     this.onImageUpload = this.onImageUpload.bind(this);
     this.onForceStart = this.onForceStart.bind(this);
@@ -35,7 +35,7 @@ class GamePage extends Component {
     });
     this.props.socket.on('voting complete', function(data){
       console.log("vote complete", data);
-      self.setState({uploadImage: false, voting: false, waiting: false, endRound: true, imageId: data});
+      self.setState({uploadImage: false, voting: false, waiting: false, endRound: true, imageId: data.imageId, winner: data.caption});
     });
   }
 
@@ -64,14 +64,16 @@ class GamePage extends Component {
               </div>
       }
       if (this.state.voting) {
+        //pass the data to CaptionVote with lobbyId, imageId and socket
         return <div class = "host_screen">Pick your favourite!
                 <CaptionVote imageId={this.state.imageId} lobbyId={this.props.lobbyId} socket={this.props.socket}/>
               </div>
       }
       if (this.state.endRound) {
         //Winning image with caption
+        console.log(this.state.winner);
         return <div className='host_screen'>
-                  <Winner imageId={this.state.imageId} caption={this.winner}/>
+                  <Winner imageId={this.state.imageId} caption={this.state.winner}/>
                   <button class="host_override">Another!</button>
                </div>
       }
