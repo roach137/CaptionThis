@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-// import SocketClient from "socket.io-client";
+import SocketClient from "socket.io-client";
 import '../../style/components/MainMenu/HostGame.css'
+
+const socket = SocketClient("https://localhost:5000");
 
 class HostGame extends Component {
   constructor(props) {

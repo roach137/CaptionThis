@@ -103,7 +103,7 @@ var checkUsername = function(req, res, next) {
 app.post('/signin/', function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
-    var db = database.db('users');
+    var db = database.db('cloudtek');
     var username = req.body.username;
     var password = req.body.password;
     db.collection('users').findOne({_id : username}, function(err, result) {
@@ -135,7 +135,7 @@ app.post('/signin/', function(req, res, next) {
 app.post('/signup/', function(req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
-    var db = database.db('users');
+    var db = database.db('cloudtek');
     var username = req.body.username;
     var password = req.body.password;
     db.collection('users').findOne({_id : username}, function(err, result){
@@ -172,7 +172,7 @@ app.get('/api/images/:id/', function(req, res, next) {
       database.close();
       return res.status(500).end(err.toString());
     }
-    var db = database.db('images');
+    var db = database.db('cloudtek');
     var imageId = req.params.id;
     db.collection('images').findOne({_id : imageId}, function(err, entry) {
       if (err) {
@@ -298,7 +298,7 @@ app.post('/api/images/', isAuthenticated, upload.single('file'), function (req,r
   MongoClient.connect(url, function(err, database) {
     // NOTE
     // We need to add the parameters somehow,
-    var db = database.db("images");
+    var db = database.db("cloudtek");
     var lobbyId = req.body.lobbyId;
     var img = req.file;
     img.author = req.body.author;
