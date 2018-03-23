@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Homepage from './frontend/pages/Homepage'
 import MainMenu from './frontend/pages/MainMenu'
-import HostGame from './frontend/components/MainMenu/HostGame'
+import Lobby from './frontend/components/MainMenu/Lobby'
 import GamePage from './frontend/components/MainMenu/GamePage'
 
 const history = createHistory();
@@ -19,7 +19,7 @@ ReactDOM.render((
         <Route exact path="/" component={Homepage}/>
         <Route path="/mainmenu" component={MainMenu}/>
 
-        <Route path="/host" component={HostGame}/>
+        <Route path="/host" component={Lobby}/>
         <Route path="/game" component={GamePage}/>
       </Switch>
     </Router>

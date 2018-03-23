@@ -20,6 +20,7 @@ const multer = require('multer');
 const validator = require('validator');
 const cookie = require('cookie');
 const session = require('express-session');
+var ObjectId = require('mongodb').ObjectID;
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb+srv://cloudtek:XXE8sDBttM3alQnT@caption-it-yavcm.mongodb.net/test";
 var upload = multer({ dest: 'uploads/'});
@@ -165,7 +166,7 @@ app.post('/signup/', function(req, res, next) {
   });
 })
 
-app.get('/api/images/:id/', function(req, res, next) {
+app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
   console.log("getting image");
   MongoClient.connect(url, function(err, database) {
     if (err) {
@@ -209,16 +210,9 @@ app.post('/api/lobbies/', isAuthenticated, function (req, res, next) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
     var lobby = {};
-    lobby.p1 = req.params.host;
-    lobby.p2 = null;
-    lobby.p3 = null;
-    lobby.p4 = null;
-    lobby.p5 = null;
-    lobby.score1 = 0;
-    lobby.score2 = 0;
-    lobby.score3 = 0;
-    lobby.score4 = 0;
-    lobby.score5 = 0;
+    lobby.name = req.body.name;
+    lobby.players = [req.body.host];
+    lobby.scores = [0];
     lobby.turn = 1;
     //upload a lobby, we can let the lobby ID be auto generated
     db.collection('lobbies').insertOne(lobby, function(err, entry) {
@@ -227,7 +221,7 @@ app.post('/api/lobbies/', isAuthenticated, function (req, res, next) {
         return res.status(500).end(err.toString());
       }
       res.status(200);
-      return res.json("Lobby created successfully " , lobby);
+      return res.json(lobby);
     });
   });
 });
@@ -288,6 +282,25 @@ app.patch('/api/lobbies/:id/scores/', isAuthenticated, function (req, res, next)
         });
       }
     });
+  });
+});
+
+app.get('/api/lobbies/:id/players/', isAuthenticated, function(req, res) {
+  MongoClient.connect(url, function(err, database){
+    var db = database.db('cloudtek');
+    var lobbyId = req.params.id;
+    db.collection('lobbies').findOne(ObjectId(lobbyId), function(err, entry) {
+      if (err) {
+        database.close();
+        return res.status(500).end(err.toString());
+      }
+      if (!entry) {
+        database.close();
+        return res.status(404).end("Lobby " + lobbyId + " does not exist");
+      }
+      database.close();
+      return res.json(entry.players);
+    })
   });
 });
 

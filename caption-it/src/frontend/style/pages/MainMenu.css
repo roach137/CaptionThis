@@ -13,3 +13,8 @@
   margin: auto;
   padding: 20px;
 }
+
+.hidden {
+  visibility: hidden;
+  position: absolute;
+}
