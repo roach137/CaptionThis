@@ -545,6 +545,10 @@ io.on('connection', function(socket) {
     console.log("full data ", data);
      socket.nsp.to(data.room).emit('voting complete', data);
    })
+   socket.on('next turn', function(data) {
+    console.log("next round ", data);
+     socket.nsp.to(data.room).emit('voting complete', data);
+   })
 });
 
 app.get('/*', function(req, res, next){

@@ -66,6 +66,7 @@ caption-it/node_modules
 caption-it/coverage
 
 # production
+build/
 caption-it/build
 
 # misc

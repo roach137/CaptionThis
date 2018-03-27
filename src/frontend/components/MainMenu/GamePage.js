@@ -21,6 +21,7 @@ class GamePage extends Component {
 
     this.onImageUpload = this.onImageUpload.bind(this);
     this.onForceStart = this.onForceStart.bind(this);
+    this.onNextRound = this.onNextRound.bind(this);
   }
 
   componentWillMount() {
@@ -37,6 +38,10 @@ class GamePage extends Component {
       console.log("vote complete", data);
       self.setState({uploadImage: false, voting: false, waiting: false, endRound: true, imageId: data.imageId, winner: data.caption});
     });
+    this.props.socket.on('next round', function(data) {
+      console.log('next round', data);
+      self.setState({uploadImage: true, voting: false, waiting: false, endRound: false, imageId: null});
+    });
   }
 
   onImageUpload() {
@@ -46,6 +51,10 @@ class GamePage extends Component {
     this.props.socket.emit('voting begins', {room : this.props.lobbyId, imageId: this.state.imageId});
     console.log("emitting", this.state.imageId);
     console.log(this.state);
+  }
+  onNextRound() {
+    this.props.socket.emit('next round', {room: this.props.lobbyId});
+    console.log("emitting next round", this.props.lobbyId);
   }
   /*onForceVotes() {
     this.props.socket.emit('voting complete', {room: this.props.lobbyId, imageId: this.state.imageId});
@@ -74,7 +83,7 @@ class GamePage extends Component {
         console.log(this.state.winner);
         return <div className='host_screen'>
                   <Winner imageId={this.state.imageId} caption={this.state.winner}/>
-                  <button class="host_override">Another!</button>
+                  <button class="host_override" onClick={this.onNextRound}>Another!</button>
                </div>
       }
     }

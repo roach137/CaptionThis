@@ -32,6 +32,9 @@ class PlayArea extends React.Component {
     this.props.socket.on('voting complete', function(data) {
       self.setState({submitCaption: false, waiting: false, voting: false, endRound: true, imageId : data.imageId, winner: data.caption});
     });
+    this.props.socket.on('next round', function(data) {
+      self.setState({submitCaption: false, waiting: false, voting: false, endRound: false, imageId: null});
+    });
   }
 
   onCaptionSubmit(){
