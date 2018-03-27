@@ -547,6 +547,10 @@ io.on('connection', function(socket) {
    })
 });
 
+app.get('/.well-known/acme-challenge/:content', function(req, res) {
+  res.send('qvfW8ewoodjtp43wkSDUToBPcGjnucxzTCXAU2-JFdI');
+})
+
 app.get('/*', function(req, res, next){
   console.log("going to a page");
   res.sendFile('index.html', {root: __dirname + '/build'});
