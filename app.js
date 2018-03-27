@@ -547,9 +547,9 @@ io.on('connection', function(socket) {
    })
 });
 
-app.get('/.well-known/acme-challenge/:content', function(req, res) {
-  res.send('JXHSqb7_PeDcvPhOvXMRkN-PrfP29TM0aFIhpjkt14A.DmAJGcDZogODpWz5Wpug7C3zzY5xE8vpk6OCQUuSH_Q');
-})
+// app.get('/.well-known/acme-challenge/:content', function(req, res) {
+//   res.send('JXHSqb7_PeDcvPhOvXMRkN-PrfP29TM0aFIhpjkt14A.DmAJGcDZogODpWz5Wpug7C3zzY5xE8vpk6OCQUuSH_Q');
+// })
 
 app.get('/*', function(req, res, next){
   console.log("going to a page");
