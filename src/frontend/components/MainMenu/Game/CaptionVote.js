@@ -25,7 +25,7 @@ class CaptionVote extends React.Component {
     //emit the data (THIS DOES NOT WORK, it only emits the lobby ID, I don't know why)
     var data = {room: this.props.lobbyId, imageId: this.props.imageId, caption: this.winner};
     this.props.socket.emit('voting complete', data);
-    console.log("emitting", this.props.imageId, this.props.lobbyId, this.winner);
+    // console.log("emitting", this.props.imageId, this.props.lobbyId, this.winner);
   }
 
   getCaption_callback(err, res) {
@@ -39,14 +39,14 @@ class CaptionVote extends React.Component {
       var id = res[i]._id;
       var caption_text = res[i].caption;
       // console.log(this.state.captions[i]._id, id);
-      console.log(caption_text);
+      // console.log(caption_text);
       elmts.push(
       <button key={id}
         id={id}
         onClick={this.onSelection(caption_text)}>{caption_text}</button>
       );
     }
-    console.log(elmts);
+    // console.log(elmts);
     this.setState({captions : res, captionElmts : elmts});
   }
 

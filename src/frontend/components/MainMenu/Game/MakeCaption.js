@@ -1,7 +1,7 @@
 import React from 'react';
 import {addCaption} from '../../../api';
-import '../../../style/components/MainMenu/Game/PlayerBox.css';
-import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css';
+import '../../../style/components/MainMenu/Game/MakeCaption.css';
 
 
 class MakeCaption extends React.Component {
@@ -31,8 +31,8 @@ class MakeCaption extends React.Component {
     var link = '/api/images/' + this.props.imageId + '/image/'
     return (
       <div className='playerbox'>
-        <img src={link}/>
-        <form id='caption-form' onSubmit={this.submitCaptionHandler}>
+        <img src={link} className='img'/>
+        <form id='caption-form' className="caption-form" onSubmit={this.submitCaptionHandler}>
           <textarea id='caption-text' placeholder='enter your caption here...' required></textarea>
           <button class = "lobby_button">Submit caption</button>
         </form>

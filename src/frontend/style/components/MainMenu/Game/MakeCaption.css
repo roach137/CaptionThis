@@ -1,0 +1,17 @@
+.img {
+  height: 480px;
+  width: auto;
+  max-width: 640px;
+}
+
+.playerbox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.caption-form {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
