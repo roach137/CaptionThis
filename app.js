@@ -552,7 +552,7 @@ app.get('/*', function(req, res, next){
   res.sendFile('index.html', {root: __dirname + '/build'});
 });
 
-server.listen(process.env.PORT || 5000, function (err) {
+server.listen(process.env.PORT || 5050, function (err) {
     if (err) console.log(err);
     else console.log("Server is now live");
 });
