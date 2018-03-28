@@ -5,7 +5,7 @@ import GamePage from '../GamePage'
 import '../../../style/components/MainMenu/HostGame.css'
 import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
-const socket = SocketClient("https://localhost:5000");
+const socket = SocketClient("http://www.cloudtekk.me");
 
 class Lobby extends Component {
   constructor(props) {
