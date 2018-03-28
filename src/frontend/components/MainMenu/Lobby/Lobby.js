@@ -5,7 +5,7 @@ import GamePage from '../GamePage'
 import '../../../style/components/MainMenu/HostGame.css'
 import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
-// const socket = SocketClient();
+const socket = SocketClient();
 
 class Lobby extends Component {
   constructor(props) {

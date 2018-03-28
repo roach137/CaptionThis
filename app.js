@@ -520,32 +520,32 @@ app.delete('/api/images/:id', function (req, res, next) {
 });
 
 //Whenever someone connects this gets executed
-// io.on('connection', function(socket) {
-//    socket.on('room', function(room) {
-//      socket.join(room);
-//    });
-//
-//    socket.on('test', function(data){
-//      console.log(data);
-//    });
-//    socket.on('start', function(data){
-//      console.log(io.sockets.clients());
-//      socket.nsp.to(data.room).emit('start', data.msg);
-//    });
-//
-//    socket.on('uploaded image', function(data){
-//      console.log("upload", data);
-//      socket.nsp.to(data.room).emit('uploaded image', data.imageId);
-//    });
-//    socket.on('voting begins', function(data) {
-//     console.log("begin", data);
-//      socket.nsp.to(data.room).emit('voting begins', data.imageId);
-//    });
-//    socket.on('voting complete', function(data) {
-//     console.log("full data ", data);
-//      socket.nsp.to(data.room).emit('voting complete', data);
-//    })
-// });
+io.on('connection', function(socket) {
+   socket.on('room', function(room) {
+     socket.join(room);
+   });
+
+   socket.on('test', function(data){
+     console.log(data);
+   });
+   socket.on('start', function(data){
+     console.log(io.sockets.clients());
+     socket.nsp.to(data.room).emit('start', data.msg);
+   });
+
+   socket.on('uploaded image', function(data){
+     console.log("upload", data);
+     socket.nsp.to(data.room).emit('uploaded image', data.imageId);
+   });
+   socket.on('voting begins', function(data) {
+    console.log("begin", data);
+     socket.nsp.to(data.room).emit('voting begins', data.imageId);
+   });
+   socket.on('voting complete', function(data) {
+    console.log("full data ", data);
+     socket.nsp.to(data.room).emit('voting complete', data);
+   })
+});
 
 app.get('/*', function(req, res, next){
   console.log("going to a page");
