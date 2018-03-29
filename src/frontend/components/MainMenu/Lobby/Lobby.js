@@ -29,17 +29,9 @@ class Lobby extends Component {
     })
   }
 
-  // displayPlayers() {
-  //   getPlayers(this.props.lobbyId, this.displayPlayers_callback);
-  // }
-
-  // displayPlayers_callback(err, res) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     this.setState({players : res});
-  //   }
-  // }
+  componentWillUnmount() {
+    
+  }
 
   startGame() {
     if (getCurrentUser() === this.props.host) {

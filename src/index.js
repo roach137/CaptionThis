@@ -19,6 +19,7 @@ ReactDOM.render((
 
         <Route path="/host" component={Lobby}/>
         <Route path="/game" component={GamePage}/>
+        <Route path="/lobbies/:id" component={Lobby}/>
       </Switch>
     </Router>
 ), document.getElementById('root'));

@@ -59,9 +59,9 @@ class GamePage extends Component {
         return <UploadImage socket={this.props.socket} onUpload={this.onImageUpload} lobbyId={this.props.lobbyId}/>;
       }
       if (this.state.waiting) {
-        return <div class = "host_screen">Now waiting for players to submit their captions
+        return (<div class = "host_screen">Now waiting for players to submit their captions
                 <button class="host_override" onClick={this.onForceStart}>You're taking too long! (Force start voting)</button>
-              </div>
+              </div>);
       }
       if (this.state.voting) {
         //pass the data to CaptionVote with lobbyId, imageId and socket
