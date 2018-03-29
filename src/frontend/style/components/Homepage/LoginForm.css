@@ -14,7 +14,15 @@
 #login-form {
   border-radius: 10px;
   border: 2px solid black;
-
   border-top-width: 35px;
+  animation: homepage-anim 1s;
+  background-color: white;
 
+}
+
+@keyframes homepage-anim {
+  from {opacity: 0;
+  }
+  to {opacity: 1;
+  }
 }
