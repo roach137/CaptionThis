@@ -67,6 +67,10 @@ export function signin(username, password, callback) {
   send('POST', '/signin/', {username : username, password : password}, callback);
 }
 
+export function signout(callback) {
+  send('GET', '/signout/', null, callback);
+}
+
 export function addImage(lobbyId, file, callback) {
   sendFiles('POST', '/api/images/', {lobbyId : lobbyId, file : file}, callback);
 }

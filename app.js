@@ -176,6 +176,14 @@ app.post('/signup/', function(req, res, next) {
   });
 })
 
+app.get('/signout/', isAuthenticated, function (req, res, next) {
+    res.setHeader('Set-Cookie', cookie.serialize('username', '', {
+          path : '/',
+          maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
+    }));
+    res.redirect('/');
+});
+
 app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
   // console.log("getting image");
   MongoClient.connect(url, function(err, database) {

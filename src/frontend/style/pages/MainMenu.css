@@ -1,9 +1,9 @@
 .main-menu {
   display: grid;
-  grid-template-columns: 30px auto 30px;
-  grid-template-rows: 40px auto 20px;
-  width : 95vw;
-  height : 100vh;
+  grid-template-columns: 20% auto 20%;
+  grid-template-rows: 10% auto 10%;
+  /* width : 95vw;
+  height : 100vh; */
 }
 
 .main-menu .choices {
@@ -12,11 +12,21 @@
   grid-column-start: 2;
   grid-column-end: span 1;
   border: 2px #3399ff solid;
-  margin: auto;
-  padding: 20px;
+  margin: 50px;
+  padding: 40px;
 }
 
 .hidden {
   visibility: hidden;
   position: absolute;
+}
+
+.signout-btn {
+  padding: 8px;
+  border: 1px #002e77 solid;
+  box-shadow: 0px 6px 0px #2b638f;
+  /* border-bottom-color: #002e77; */
+  border-radius: 8px;
+  background-color: white;
+  /* border-bottom-width: 8px; */
 }

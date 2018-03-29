@@ -1,6 +1,7 @@
 import React from 'react';
 import LobbyRow from './LobbyRow';
 import Lobby from './Lobby';
+import GameOptions from '../GameOptions'
 import { getLobbies } from '../../../api';
 import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
@@ -14,10 +15,15 @@ class LobbiesTable extends React.Component {
     this.getLobbies = this.getLobbies.bind(this);
     this.getLobbies_callback = this.getLobbies_callback.bind(this);
     this.goToLobby = this.goToLobby.bind(this);
+    this.backToMainMenu = this.backToMainMenu.bind(this);
   }
 
   getLobbies() {
     getLobbies(this.getLobbies_callback);
+  }
+
+  backToMainMenu() {
+    this.setState({returningToMainMenu : true});
   }
 
   getLobbies_callback(err, res) {
@@ -39,25 +45,21 @@ class LobbiesTable extends React.Component {
   }
 
   render() {
-    // if (this.state.loading) {
-    //   return (<div>TBD</div>);
-    // } else {
-      // getLobbies((function(err, res){
-      //   var lobbies = [];
-      //   res.forEach(function(lobby){
-      //     lobbies.push(<LobbyRow key={lobby._id} name={lobby.name}/>);
-      //   });
-      //   return <div>{lobbies}</div>
-      // }).bind(this))
-    // }
+    if (this.state.returningToMainMenu) {
+      return (
+        <GameOptions />
+      );
+    }
     if (this.state.selectedLobby) {
       return (<Lobby lobbyId={this.state.selectedLobby.lobbyId} host={this.state.selectedLobby.host}/>);
     }
-    return (<div>
-      <button class="lobby_button" onClick={this.getLobbies}>Click to refresh lobbies</button>
-    <div class="lobby_table">{this.state.lobbies}</div>
-    </div>
-  );
+    return (
+      <div>
+        <button onClick={this.backToMainMenu}>Back</button>
+        <button className="lobby_button" onClick={this.getLobbies}>Click to refresh lobbies</button>
+        <div className="lobby_table">{this.state.lobbies}</div>
+      </div>
+    );
   }
 }
 export default LobbiesTable;

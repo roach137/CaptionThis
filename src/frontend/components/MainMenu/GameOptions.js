@@ -35,7 +35,6 @@ class GameOptions extends React.Component {
   }
 
   showLobbiesTable() {
-    console.log(this.state.destination);
     this.setState({lobbyId : "", destination : "lobbiesTable"});
   }
 
