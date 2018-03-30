@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import SocketClient from "socket.io-client";
-import { getPlayers, getCurrentUser } from '../../../api';
+import { getPlayers, getCurrentUser, leaveGame } from '../../../api';
 import GamePage from '../GamePage'
+import GameOptions from '../GameOptions';
 import '../../../style/components/MainMenu/HostGame.css'
 import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
 
@@ -11,13 +12,12 @@ class Lobby extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startGame : false
+      startGame : false,
+      leftGame : false
     }
 
     this.startGame = this.startGame.bind(this);
     this.startGame_callback = this.startGame_callback.bind(this);
-    // this.displayPlayers = this.displayPlayers.bind(this);
-    // this.displayPlayers_callback = this.displayPlayers_callback.bind(this);
   }
 
   componentWillMount() {
@@ -30,7 +30,7 @@ class Lobby extends Component {
   }
 
   componentWillUnmount() {
-    
+    socket.emit('leave room', this.props.lobbyId);
   }
 
   startGame() {
@@ -49,13 +49,27 @@ class Lobby extends Component {
     }
   }
 
+  leaveGame() {
+    leaveGame(this.props.lobbyId, getCurrentUser(), function(err, res){
+      if (err) {
+        console.log(err);
+      } else {
+        socket.emit('leave room', this.props.lobbyId);
+        this.setState({leftGame : true});
+      }
+    })
+  }
 
   render() {
+    if (this.state.leftGame) {
+      return (<GameOptions/>);
+    }
     if (this.state.startGame) {
       return (<GamePage socket={socket} host={this.props.host} lobbyId={this.props.lobbyId}/>);
     }
     return(
       <div id="host-game-menu">
+        <button className="lobby_button" onClick={this.leaveGame}>Leave Game</button>
         <button className="lobby_button" onClick={this.startGame}>Start game</button>
         <div id="player-list" class="players">
           <div class="section_title">Lobby ID: </div>

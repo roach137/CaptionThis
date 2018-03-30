@@ -102,3 +102,7 @@ export function addCaption(caption, imageId, lobbyId, callback) {
 export function getCaptions(imageId, callback) {
   send('GET', '/api/images/' + imageId + '/captions/', null, callback);
 }
+
+export function leaveGame(lobbyId, username, callback) {
+  send('PATCH', '/api/lobbies/' + lobbyId + '/', {user : username}, callback);
+}

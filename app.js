@@ -37,6 +37,12 @@ const session = require('express-session');
 // const MongoStore = require('connect-mongo')(session);
 
 session.cookie = {httpOnly: true, sameSite: true}
+
+if (app.get('env') === 'production') {
+  session.cookie.secure = true;
+  session.cookie.sameSite = true;
+}
+
 app.use(session({
   secret: 'mySecret',
   // store : new MongoStore({url : url}),
@@ -45,10 +51,7 @@ app.use(session({
   cookie: {httpOnly: true, sameSite: true}
 }));
 
-if (app.get('env') === 'production') {
-  session.cookie.secure = true;
-  session.cookie.sameSite = true;
-}
+
 
 app.use(function(req, res, next){
     var username = (req.session.username)? req.session.username : '';
@@ -177,11 +180,12 @@ app.post('/signup/', function(req, res, next) {
 })
 
 app.get('/signout/', isAuthenticated, function (req, res, next) {
+    req.session.destroy();
     res.setHeader('Set-Cookie', cookie.serialize('username', '', {
           path : '/',
           maxAge: 60 * 60 * 24 * 7 // 1 week in number of seconds
     }));
-    res.redirect('/');
+    return res.json('signed out');
 });
 
 app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
@@ -460,7 +464,7 @@ app.get('/api/images/:id/captions/', function(req, res, next) {
 });
 
 //Get the list of active lobbies
-app.get('api/lobbies/', function(req, res, next) {
+app.get('api/lobbies/', isAuthenticated, function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -474,10 +478,27 @@ app.get('api/lobbies/', function(req, res, next) {
   })
 });
 
+app.patch('/api/lobbies/:id/', function(req, res){
+  MongoClient.connect(url, function(err, database){
+    if (err) return res.status(500).end(err.toString());
+    var db = database.db('cloudtek');
+    var lobbyId = req.params.id;
+    var user = req.body.user;
+    db.collection('lobbies').findOne(ObjectId(lobbyId), function(err, lobby){
+      if (err) return res.status(500).end(err.toString());
+      if (!lobby) return res.status(404).end('lobby ' + lobbyId + ' does not exist.');
+      db.collection('lobbies').updateOne(ObjectId(lobbyId), {$set : {players : lobby.players.filter(id => id === user)}}).then(function(result){
+        res.status(200);
+        return res.json(user);
+      });
+    });
+  });
+});
+
 //Clear all data relevant to a lobby, given the lobby ID
 //NOTE
 //These should never be called by a user
-app.delete('/api/lobbies/:id', function (req, res, next) {
+app.delete('/api/lobbies/:id', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -531,6 +552,10 @@ app.delete('/api/images/:id', function (req, res, next) {
 io.on('connection', function(socket) {
    socket.on('room', function(room) {
      socket.join(room);
+   });
+
+   socket.on('leave room', function(room){
+     socket.leave(room);
    });
 
    socket.on('test', function(data){
