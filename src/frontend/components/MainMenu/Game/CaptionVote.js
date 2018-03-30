@@ -9,7 +9,7 @@ class CaptionVote extends React.Component {
       captionElmts : []
     }
     this.getCaption_callback = this.getCaption_callback.bind(this);
-    this.winner = null;
+    // this.winning_caption = null;
     this.onSelection = this.onSelection.bind(this);
   }
 
@@ -18,12 +18,14 @@ class CaptionVote extends React.Component {
     getCaptions(this.props.imageId, this.getCaption_callback);
   }
 
-  onSelection = (caption) => (e) => {
+  onSelection = (caption, author) => (e) => {
     //get the caption text from the function call
     console.log(caption);
-    this.winner = caption;
+    console.log(author);
+    // this.winner = author;
+    // this.winning_caption = caption;
     //emit the data (THIS DOES NOT WORK, it only emits the lobby ID, I don't know why)
-    var data = {room: this.props.lobbyId, imageId: this.props.imageId, caption: this.winner};
+    var data = {room: this.props.lobbyId, imageId: this.props.imageId, caption: caption, author : author};
     this.props.socket.emit('voting complete', data);
     // console.log("emitting", this.props.imageId, this.props.lobbyId, this.winner);
   }
@@ -38,12 +40,14 @@ class CaptionVote extends React.Component {
     for (var i = 0; i < res.length; i++) {
       var id = res[i]._id;
       var caption_text = res[i].caption;
+      var author = res[i].author
       // console.log(this.state.captions[i]._id, id);
       // console.log(caption_text);
       elmts.push(
       <button key={id}
+        author={author}
         id={id}
-        onClick={this.onSelection(caption_text)}>{caption_text}</button>
+        onClick={this.onSelection(caption_text, author)}>{caption_text}</button>
       );
     }
     // console.log(elmts);

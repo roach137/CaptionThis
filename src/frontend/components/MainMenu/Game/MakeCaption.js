@@ -1,5 +1,5 @@
 import React from 'react';
-import {addCaption} from '../../../api';
+import {addCaption, getCurrentUser} from '../../../api';
 import '../../../style/components/MainMenu/Lobby/LobbyTable.css';
 import '../../../style/components/MainMenu/Game/MakeCaption.css';
 
@@ -16,7 +16,7 @@ class MakeCaption extends React.Component {
     var caption = document.querySelector('#caption-text').value;
     console.log(caption);
     var imageId = this.props.imageId;
-    addCaption(caption, imageId, this.props.lobbyId, this.submitCaptionHandler_callback);
+    addCaption(getCurrentUser(), caption, imageId, this.props.lobbyId, this.submitCaptionHandler_callback);
   }
 
   submitCaptionHandler_callback(err, res) {

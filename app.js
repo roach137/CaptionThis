@@ -283,7 +283,6 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
         database.close();
         return res.status(500).end(err.toString());
       }
-      console.log(lobby);
       if (lobby) {
         var username = req.body.username;
         //insert the player into the first open player slot
@@ -292,11 +291,8 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
           return res.status(409).end("Lobby is full");
         }
         lobby.players.push(username);
-        console.log(lobby);
-        console.log(lobby.players);
         //actually update the lobby
         db.collection('lobbies').updateOne({_id:ObjectId(req.params.id)}, {$set : {players : lobby.players}}, function(err, success) {
-          console.log(success);
           if (err) {
             console.log('error when updating');
             database.close();
@@ -370,7 +366,6 @@ app.get('/api/lobbies/', isAuthenticated, function(req, res){
         database.close();
         return res.status(500).end(err.toString());
       }
-      // console.log(results);
       res.status(200);
       return res.json(results);
     });
@@ -389,11 +384,10 @@ app.post('/api/images/', isAuthenticated, upload.single('file'), function (req,r
     var img = req.file;
     img.author = req.session.username;
     img.lobbyId = req.body.lobbyId;
-    // console.log(img);
     db.collection('images').insertOne(img, function(err, entry) {
       if (err) return res.status(500).end(err.toString());
       res.status(200);
-      // console.log(entry.ops[0]._id);
+      // (entry.ops[0]._id);
       var result = {_id : entry.ops[0]._id}
       return res.json(result);
     })
@@ -409,11 +403,10 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
     var imageId = validator.escape(req.body.imageId);
     var caption = validator.escape(req.body.caption);
     var lobbyId = validator.escape(req.body.lobbyId);
+    var author = validator.escape(req.body.author);
     var author = req.session.username;
-    //upload a caption to the database (idk which table yet)
-    //it should be formatted as follows:
-    // { "caption": "caption", "lobbyID": "lobbyID", "imageID": "imageID"}
-    db.collection('captions').insertOne({caption : caption, imageId : imageId, lobbyId : lobbyId, score: 0}, function(err, entry) {
+
+    db.collection('captions').insertOne({caption : caption, author : author, imageId : imageId, lobbyId : lobbyId, score: 0}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());
@@ -427,7 +420,6 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
 
 //Voting
 app.patch('api/captions/:id/', isAuthenticated, function (req, res, next) {
-  console.log("Requesting ", req.params.id);
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -436,7 +428,6 @@ app.patch('api/captions/:id/', isAuthenticated, function (req, res, next) {
         database.close();
         return res.status(500).end(err.toString());
       }
-      console.log(caption);
       if (caption) {
         caption.score++;
         db.collection('captions').update({_id: req.params.id}, caption, {multi: false}, function(err, success) {
@@ -474,7 +465,6 @@ app.get('api/lobbies/', isAuthenticated, function(req, res, next) {
     var db = database.db('cloudtek');
     var imageId = req.params.id;
     db.collection('lobbies').find({imageId: imageId}, {caption:1, author:1}, function (err, entry) {
-      console.log(entry);
       if (entry) {
         return entry.toArray();
       }
