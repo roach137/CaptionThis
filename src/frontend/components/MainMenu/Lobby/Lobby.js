@@ -18,6 +18,7 @@ class Lobby extends Component {
 
     this.startGame = this.startGame.bind(this);
     this.startGame_callback = this.startGame_callback.bind(this);
+    this.leaveGame = this.leaveGame.bind(this);
   }
 
   componentWillMount() {
@@ -50,15 +51,18 @@ class Lobby extends Component {
   }
 
   leaveGame() {
+    var self = this;
     leaveGame(this.props.lobbyId, getCurrentUser(), function(err, res){
       if (err) {
         console.log(err);
       } else {
-        socket.emit('leave room', this.props.lobbyId);
-        this.setState({leftGame : true});
+        socket.emit('leave room', self.props.lobbyId);
+        self.setState({leftGame : true});
       }
     })
   }
+
+
 
   render() {
     if (this.state.leftGame) {

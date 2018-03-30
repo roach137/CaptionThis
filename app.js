@@ -292,9 +292,13 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
           return res.status(409).end("Lobby is full");
         }
         lobby.players.push(username);
+        console.log(lobby);
+        console.log(lobby.players);
         //actually update the lobby
-        db.collection('lobbies').update({_id: req.params.id}, lobby, {multi: false}, function(err, success) {
+        db.collection('lobbies').updateOne({_id:ObjectId(req.params.id)}, {$set : {players : lobby.players}}, function(err, success) {
+          console.log(success);
           if (err) {
+            console.log('error when updating');
             database.close();
             return res.status(500).end(err.toString());
           }
