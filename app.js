@@ -63,6 +63,7 @@ app.use(function(req, res, next){
 });
 
 app.use(express.static('build'));
+// app.use(express.static(__dirname + '/build'));
 
 app.use(function (req, res, next){
     console.log("HTTP request", req.method, req.url, req.body);
