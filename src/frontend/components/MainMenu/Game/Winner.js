@@ -1,7 +1,8 @@
 import React from 'react';
 import { getCaptions } from '../../../api';
-import '../../../style/components/MainMenu/GamePage.css'
-import '../../../style/components/MainMenu/Lobby/LobbyTable.css'
+import '../../../style/components/MainMenu/GamePage.css';
+import '../../../style/components/MainMenu/Game/Winner.css';
+import '../../../style/components/MainMenu/Lobby/LobbyTable.css';
 
 class Winner extends React.Component {
   constructor(props) {
