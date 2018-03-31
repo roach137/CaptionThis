@@ -52,7 +52,7 @@ class Lobby extends Component {
 
   leaveGame() {
     var self = this;
-    leaveGame(this.props.lobbyId, getCurrentUser(), function(err, res){
+    leaveGame(this.props.lobbyId, function(err, res){
       if (err) {
         console.log(err);
       } else {

@@ -83,8 +83,8 @@ export function getPlayers(lobbyId, callback) {
   send('GET', '/api/lobbies/' + lobbyId + '/players/', null, callback);
 }
 
-export function joinLobby(lobbyId, username, callback) {
-  send('PATCH', '/api/lobbies/' + lobbyId + '/', {username : username}, callback);
+export function joinLobby(lobbyId, callback) {
+  send('PATCH', '/api/lobbies/' + lobbyId + '/', {action : 'join'}, callback);
 }
 
 export function vote(captionId, callback) {
@@ -95,14 +95,14 @@ export function getLobbies(callback) {
   send('GET', '/api/lobbies/', null, callback);
 }
 
-export function addCaption(author, caption, imageId, lobbyId, callback) {
-  send('POST', '/api/captions/', {author : author, caption : caption, imageId : imageId, lobbyId : lobbyId}, callback);
+export function addCaption(caption, imageId, lobbyId, callback) {
+  send('POST', '/api/captions/', {caption : caption, imageId : imageId, lobbyId : lobbyId}, callback);
 }
 
 export function getCaptions(imageId, callback) {
   send('GET', '/api/images/' + imageId + '/captions/', null, callback);
 }
 
-export function leaveGame(lobbyId, username, callback) {
-  send('PATCH', '/api/lobbies/' + lobbyId + '/', {user : username}, callback);
+export function leaveGame(lobbyId, callback) {
+  send('PATCH', '/api/lobbies/' + lobbyId + '/', {action : 'leave'}, callback);
 }

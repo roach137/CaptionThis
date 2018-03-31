@@ -275,6 +275,7 @@ app.post('/api/lobbies/', isAuthenticated, function (req, res, next) {
 //Add a new player to a lobby given the lobby ID
 app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
+    console.log("finding database");
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
     console.log("finding game with _id " + req.params.id);
@@ -284,22 +285,33 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
         return res.status(500).end(err.toString());
       }
       if (lobby) {
-        var username = req.body.username;
+        var username = req.session.username;
+        var action = req.body.action;
+        var lobbyId = req.params.id;
+        console.log(action);
         //insert the player into the first open player slot
         if (lobby.players.length == 5) {
           database.close();
           return res.status(409).end("Lobby is full");
         }
-        lobby.players.push(username);
         //actually update the lobby
-        db.collection('lobbies').updateOne({_id:ObjectId(req.params.id)}, {$set : {players : lobby.players}}, function(err, success) {
-          if (err) {
-            console.log('error when updating');
-            database.close();
-            return res.status(500).end(err.toString());
-          }
-          return res.json("Successfully joined lobby");
-        });
+        if (action === 'join') {
+          lobby.players.push(username);
+          db.collection('lobbies').updateOne({_id:ObjectId(lobbyId)}, {$set : {players : lobby.players}}, function(err, success) {
+            if (err) {
+              console.log('error when updating');
+              database.close();
+              return res.status(500).end(err.toString());
+            }
+            return res.json("Successfully joined lobby");
+          });
+        }
+        if (action === 'leave') {
+          db.collection('lobbies').updateOne({_id : ObjectId(lobbyId)}, {$set : {players : lobby.players.filter(id => id === req.session.username)}}, function(result){
+            res.status(200);
+            return res.json("user has left the game");
+          });
+        }
       }
     });
   });
@@ -338,6 +350,7 @@ app.patch('/api/lobbies/:id/scores/', isAuthenticated, function (req, res, next)
 
 app.get('/api/lobbies/:id/players/', isAuthenticated, function(req, res) {
   MongoClient.connect(url, function(err, database){
+    if (err) return res.status(500).end('Error when connecting to database');
     var db = database.db('cloudtek');
     var lobbyId = req.params.id;
     db.collection('lobbies').findOne(ObjectId(lobbyId), function(err, entry) {
@@ -403,7 +416,6 @@ app.post('/api/captions/', isAuthenticated, function (req, res, next) {
     var imageId = validator.escape(req.body.imageId);
     var caption = validator.escape(req.body.caption);
     var lobbyId = validator.escape(req.body.lobbyId);
-    var author = validator.escape(req.body.author);
     var author = req.session.username;
 
     db.collection('captions').insertOne({caption : caption, author : author, imageId : imageId, lobbyId : lobbyId, score: 0}, function(err, entry) {
@@ -470,23 +482,6 @@ app.get('api/lobbies/', isAuthenticated, function(req, res, next) {
       }
     });
   })
-});
-
-app.patch('/api/lobbies/:id/', function(req, res){
-  MongoClient.connect(url, function(err, database){
-    if (err) return res.status(500).end(err.toString());
-    var db = database.db('cloudtek');
-    var lobbyId = req.params.id;
-    var user = req.body.user;
-    db.collection('lobbies').findOne(ObjectId(lobbyId), function(err, lobby){
-      if (err) return res.status(500).end(err.toString());
-      if (!lobby) return res.status(404).end('lobby ' + lobbyId + ' does not exist.');
-      db.collection('lobbies').updateOne(ObjectId(lobbyId), {$set : {players : lobby.players.filter(id => id === user)}}).then(function(result){
-        res.status(200);
-        return res.json(user);
-      });
-    });
-  });
 });
 
 //Clear all data relevant to a lobby, given the lobby ID
