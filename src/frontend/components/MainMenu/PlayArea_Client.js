@@ -105,8 +105,9 @@ class PlayArea_Client extends React.Component {
 
     if (this.state.show_winner) {
       console.log(this.state.winner);
-      return (    
-        <div id="playarea">
+      //just ignore the class being host screen, its just a styling thing, as long as theres no button it doesnt matter
+      return (
+        <div id="playarea" class="host_screen">
           <Winner imageId={this.state.imageId} author={this.state.winner} caption={this.state.winning_caption}/>
         </div>
       );

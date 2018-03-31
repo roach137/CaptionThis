@@ -1,9 +1,12 @@
 .winner {
-  margin: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .winner img {
-  max-height: 100%;
+  max-height: 140%;
   width: auto;
-  max-width: 100%;
+  max-width: 140%;
 }

@@ -1,7 +1,7 @@
 .img {
-  height: 480px;
+  max-height: 140%;
   width: auto;
-  max-width: 640px;
+  max-width: 140%;
 }
 
 .playerbox {
