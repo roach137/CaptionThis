@@ -1,0 +1,9 @@
+.winner {
+  margin: 40px;
+}
+
+.winner img {
+  height: 480px;
+  width: auto;
+  max-width: 640px;
+}

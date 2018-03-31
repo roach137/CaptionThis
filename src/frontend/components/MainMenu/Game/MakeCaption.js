@@ -1,5 +1,5 @@
 import React from 'react';
-import {addCaption} from '../../../api';
+import {addCaption, getCurrentUser} from '../../../api';
 import '../../../style/components/MainMenu/Lobby/LobbyTable.css';
 import '../../../style/components/MainMenu/Game/MakeCaption.css';
 

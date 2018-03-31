@@ -9,7 +9,7 @@ class LobbyRow extends React.Component {
   }
 
   joinLobby() {
-    joinLobby(this.props.id, getCurrentUser(), this.joinGame_callback);
+    joinLobby(this.props.id, this.joinGame_callback);
   }
 
   joinGame_callback(err, res) {

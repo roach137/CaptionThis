@@ -11,7 +11,7 @@ class Winner extends React.Component {
       caption: null
     }
   }
-  
+
   componentWillMount() {
     console.log(this.props.imageId);
     getCaptions(this.props.imageId, this.getCaption_callback);
@@ -28,9 +28,10 @@ class Winner extends React.Component {
 
   render() {
     var link = '/api/images/' + this.props.imageId + '/image/';
-    return <div class="winner">
-              <div class="winner_title_text"> Winner! </div>
-              <div class="caption_text">{this.props.caption}</div>
+    return <div className="winner">
+              <div className="winner_title_text"> Winner! </div>
+              <div className="winner_author">{this.props.author}</div>
+              <div className="caption_text">{this.props.caption}</div>
               <img src={link}></img>
            </div>
   }
