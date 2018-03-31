@@ -3,7 +3,7 @@
 }
 
 .winner img {
-  height: 480px;
+  max-height: 100%;
   width: auto;
-  max-width: 640px;
+  max-width: 100%;
 }
