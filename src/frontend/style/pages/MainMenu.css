@@ -16,7 +16,8 @@ a {
   grid-column-start: 2;
   grid-column-end: span 1;
   border: 2px #3399ff solid;
-  margin: 50px;
+  margin: auto;
+  width: 50%;
   padding: 40px;
 }
 
