@@ -566,7 +566,11 @@ io.on('connection', function(socket) {
    socket.on('voting complete', function(data) {
     console.log("full data ", data);
      socket.nsp.to(data.room).emit('voting complete', data);
-   })
+   });
+   socket.on('next round', function(data) {
+    console.log('next round', data);
+    socket.nsp.to(data.room).emit('next round', data);
+   });
 });
 
 app.get('/*', function(req, res, next){

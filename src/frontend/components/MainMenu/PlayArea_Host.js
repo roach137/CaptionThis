@@ -18,6 +18,7 @@ class PlayArea_Host extends React.Component {
     // this.winning_caption = null;
 
     this.onForceStart = this.onForceStart.bind(this);
+    this.onNextRound = this.onNextRound.bind(this);
   }
 
   componentWillMount(){
@@ -43,11 +44,22 @@ class PlayArea_Host extends React.Component {
         winner : data.author,
         winning_caption : data.caption});
     });
+    this.props.socket.on('next round', function(data) {
+      self.setState({uploading_image : true,
+        waiting_captions : false,
+        voting : false,
+        show_winner : false});
+    });
   }
 
   onForceStart() {
     this.props.socket.emit('voting begins', {room : this.props.lobbyId, imageId: this.state.imageId});
     console.log("emitting", this.imageId);
+    console.log(this.state);
+  }
+
+  onNextRound() {
+    this.props.socket.emit('next round', {room: this.props.lobbyId});
     console.log(this.state);
   }
 
@@ -76,7 +88,9 @@ class PlayArea_Host extends React.Component {
     if (this.state.show_winner) {
       console.log(this.state.winner);
       return(
+        <div class = "host_screen">
         <Winner author={this.state.winner} caption={this.state.winning_caption} imageId={this.state.imageId}/>
+        <button className="host_override" onClick={this.onNextRound}>Another!</button></div>
       );
     }
   }

@@ -49,6 +49,15 @@ class PlayArea_Client extends React.Component {
         winning_caption : data.caption
       });
     });
+    this.props.socket.on('next round', function(data) {
+      self.setState({
+        waiting_image : true,
+        making_caption : false,
+        waiting_all_captions : false,
+        waiting_vote : false,
+        show_winner : false,
+      });
+    });
   }
 
   onCaptionSubmit(){
