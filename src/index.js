@@ -10,6 +10,7 @@ import Homepage from './frontend/pages/Homepage'
 import MainMenu from './frontend/pages/MainMenu'
 import Lobby from './frontend/components/MainMenu/Lobby/Lobby'
 import GamePage from './frontend/components/MainMenu/GamePage'
+import Credits from './frontend/pages/Credits'
 
 ReactDOM.render((
     <Router>
@@ -19,7 +20,7 @@ ReactDOM.render((
 
         <Route path="/host" component={Lobby}/>
         <Route path="/game" component={GamePage}/>
-        <Route path="/lobbies/:id" component={Lobby}/>
+        <Route path="/credits" component={Credits}/>
       </Switch>
     </Router>
 ), document.getElementById('root'));

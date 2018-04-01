@@ -581,5 +581,5 @@ app.get('/*', function(req, res, next){
 
 server.listen(process.env.PORT || 8000, function (err) {
     if (err) console.log(err);
-    else console.log("Server is now live");
+    else console.log("Server is now live on port", process.env.PORT || 8000);
 });
