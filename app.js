@@ -477,7 +477,7 @@ app.delete('/api/lobbies/:id', isAuthenticated, function (req, res, next) {
     var db = database.db('cloudtek');
     //Clear all data from captions where the lobby ID matches the given one
     var lobbyId = req.params.id;
-    db.collection('lobbies').remove({lobbyId: lobbyId}, function(err, entry) {
+    db.collection('lobbies').remove({_id: ObjectId(lobbyId)}, function(err, entry) {
       if (err) {
         database.close();
         return res.status(500).end(err.toString());

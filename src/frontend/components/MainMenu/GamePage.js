@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { getCurrentUser, addCaption, leaveGame } from '../../api';
+import { getCurrentUser, addCaption, leaveGame, destroyLobby } from '../../api';
 import GameOptions from './GameOptions';
 import Winner from './Game/Winner';
 import CaptionVote from './Game/CaptionVote';
@@ -29,6 +29,12 @@ class GamePage extends Component {
       return;
     }
     if (this.props.host === getCurrentUser()) {
+      destroyLobby(this.props.lobbyId, function(err, res){
+        if (err) {
+          console.log(err);
+          return;
+        }
+      })
       this.props.socket.emit('host left', this.props.lobbyId);
     }
 

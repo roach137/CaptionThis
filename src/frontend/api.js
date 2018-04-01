@@ -106,3 +106,7 @@ export function getCaptions(imageId, callback) {
 export function leaveGame(lobbyId, callback) {
   send('PATCH', '/api/lobbies/' + lobbyId + '/', {action : 'leave'}, callback);
 }
+
+export function destroyLobby(lobbyId, callback) {
+  send('DELETE', '/api/lobbies/' + lobbyId + '/', null, callback);
+}
