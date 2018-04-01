@@ -15,26 +15,34 @@ class GamePage extends Component {
     this.leaveGame_callback = this.leaveGame_callback.bind(this);
   }
 
+  componentWillMount() {
+    console.log(this.props.lobbyId);
+    var self = this;
+    this.props.socket.on('host left', function(data){
+      leaveGame(self.props.lobbyId, self.leaveGame_callback);
+    });
+  }
+
   leaveGame_callback(err, res){
     if (err) {
       console.log(err);
       return;
     }
+    if (this.props.host === getCurrentUser()) {
+      this.props.socket.emit('host left', this.props.lobbyId);
+    }
+
     this.props.socket.emit('leave game', this.props.lobbyId);
     this.setState({leaving_game : true});
   }
 
   leaveGame(){
-    console.log('leaving game');
     leaveGame(this.props.lobbyId, this.leaveGame_callback);
 
   }
 
   render() {
     if (this.state.leaving_game) {
-      // if (getCurrentUser() === this.props.host) {
-      //
-      // }
       return(
         <GameOptions/>
       );

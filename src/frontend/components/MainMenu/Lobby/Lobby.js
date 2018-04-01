@@ -22,6 +22,7 @@ class Lobby extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props.lobbyId);
     var self = this;
     socket.emit('room', this.props.lobbyId);
 

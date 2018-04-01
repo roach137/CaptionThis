@@ -95,26 +95,6 @@ var checkUsername = function(req, res, next) {
     next();
 };
 
-// app.get('/api/hello/', function(req, res, next) {
-//   console.log("Hello");
-//   MongoClient.connect(url, function(err, client) {
-//     if (err) throw err;
-//     console.log("connected to db");
-//     var db = client.db('lobbies');
-//     db.createCollection("lobby", function(err, res) {
-//       if (err) throw err;
-//       console.log("Collection created");
-//       db.collection("lobby").insertOne({name: "MyLobby", players:"5"}, function(err, res) {
-//         if (err) throw err;
-//         console.log("Inserted document" + res);
-//         client.close();
-//       });
-//
-//     });
-//
-//   });
-//
-// });
 app.post('/signin/', function(req, res) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
@@ -132,13 +112,10 @@ app.post('/signin/', function(req, res) {
       }
       var salt = result.salt;
       var hash = generateHash(password, salt);
-      // console.log(hash);
-      // console.log(result.saltedHash);
       if (hash !== result.saltedHash) {
         database.close();
         return res.status(401).end("access denied");
       }
-      // console.log("Logged in");
       //set the session username to the one who logged in
       req.session.username = username;
       res.status(200)
@@ -169,7 +146,6 @@ app.post('/signup/', function(req, res, next) {
           database.close();
           return res.status(500).end(err.toString());
         }
-        // console.log(entry.ops);
         //set the session username to the one who logged in
         req.session.username = username;
         res.status(200);
@@ -190,7 +166,6 @@ app.get('/signout/', isAuthenticated, function (req, res, next) {
 });
 
 app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
-  // console.log("getting image");
   MongoClient.connect(url, function(err, database) {
     if (err) {
       database.close();
@@ -207,7 +182,6 @@ app.get('/api/images/:id/', isAuthenticated, function(req, res, next) {
         database.close();
         return res.status(404).end("Image " + imageId + " does not exist");
       }
-      console.log(entry);
       return res.json(entry);
     });
   });
@@ -276,10 +250,8 @@ app.post('/api/lobbies/', isAuthenticated, function (req, res, next) {
 //Add a new player to a lobby given the lobby ID
 app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
-    console.log("finding database");
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
-    console.log("finding game with _id " + req.params.id);
     db.collection('lobbies').findOne({_id:ObjectId(req.params.id)}, function (err, lobby) {
       if (err) {
         database.close();
@@ -289,7 +261,6 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
         var username = req.session.username;
         var action = req.body.action;
         var lobbyId = req.params.id;
-        console.log(action);
         //insert the player into the first open player slot
         if (lobby.players.length == 5) {
           database.close();
@@ -300,7 +271,6 @@ app.patch('/api/lobbies/:id/', isAuthenticated, function (req, res, next) {
           lobby.players.push(username);
           db.collection('lobbies').updateOne({_id:ObjectId(lobbyId)}, {$set : {players : lobby.players}}, function(err, success) {
             if (err) {
-              console.log('error when updating');
               database.close();
               return res.status(500).end(err.toString());
             }
@@ -382,6 +352,19 @@ app.get('/api/lobbies/', isAuthenticated, function(req, res){
       }
       res.status(200);
       return res.json(results);
+    });
+  });
+});
+
+app.get('/api/lobbies/:id/host/', isAuthenticated, function(req, res){
+  MongoClient.connect(url, function(err, database){
+    if (err) return res.status(500).end("error when connecting to database");
+    var db = database.db('cloudtek');
+    var lobbyId = req.params.id;
+    db.collection('lobbies').findOne({_id : ObjectId(lobbyId)}, function(err, entry){
+      if (err) return res.status(500).end("Error occurred on the database");
+      if (!entry) return res.status(404).end("lobby " + lobbyId + " not found");
+      return res.json(entry.players[0]);
     });
   });
 });
@@ -547,10 +530,6 @@ io.on('connection', function(socket) {
    socket.on('leave room', function(room){
      socket.leave(room);
    });
-
-   socket.on('test', function(data){
-     console.log(data);
-   });
    socket.on('start', function(data){
      console.log(io.sockets.clients());
      socket.nsp.to(data.room).emit('start', data.msg);
@@ -571,6 +550,11 @@ io.on('connection', function(socket) {
    socket.on('next round', function(data) {
     console.log('next round', data);
     socket.nsp.to(data.room).emit('next round', data);
+   });
+
+   socket.on('host left', function(data){
+     console.log(data);
+     socket.broadcast.to(data).emit('host left', data);
    });
 });
 
