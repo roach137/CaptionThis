@@ -440,7 +440,7 @@ app.patch('api/captions/:id/', isAuthenticated, function (req, res, next) {
 
 //Get commands
 //Get the captions associated with an image ID
-app.get('/api/images/:id/captions/', function(req, res, next) {
+app.get('/api/images/:id/captions/', isAuthenticated, function(req, res, next) {
   MongoClient.connect(url, function(err, database) {
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -488,7 +488,7 @@ app.delete('/api/lobbies/:id', isAuthenticated, function (req, res, next) {
   });
 });
 
-app.delete('/api/captions/:id', function (req, res, next) {
+app.delete('/api/captions/:id', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database){
     if (err) return res.status(500).end(err.toString());
     var db = database.db('cloudtek');
@@ -505,7 +505,7 @@ app.delete('/api/captions/:id', function (req, res, next) {
   });
 });
 
-app.delete('/api/images/:id', function (req, res, next) {
+app.delete('/api/images/:id', isAuthenticated, function (req, res, next) {
   MongoClient.connect(url, function(err, database) {
     var db = database.db('cloudtek');
     //Clear all data from images where the lobby ID matches the given one
