@@ -6,6 +6,8 @@
 
 App URL : https://www.cloudtekk.me
 
+Demo Video: https://www.youtube.com/watch?v=tyfr5ykBCPE&feature=youtu.be
+
 Caption This! Is an idea for a browser based multiplayer game. In this game players will take turn uploading an image from their devices. Once this image is uploaded the remaining players will, at the same time, each come up with a caption or title for the image (preferably a humorous one) within a set time limit. After all the captions are in, the original poster of the image chooses their favourite one, the author of the winning caption gets a point and the game continues to the next round with a new uploader. If an uploader fails to upload an image before their time expires the game simply skips their turn and continues to the next round, if a player fails to write a caption within the time limit they will be ineligible to score a point that round. If all players fail to write a caption within the time limit, all players including the uploader lose a point. The game continues until a player reaches a score limit which is set by the first player to join the game.
 
 The game will require a minimum of 3 players (otherwise there would be no actual competition) and allow a maximum of 5 players (subject to change).
