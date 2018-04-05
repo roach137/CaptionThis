@@ -39,3 +39,245 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Every user who is logged into the game is not in the same lobby, a lobby consists of only the 5 players participating in a particular match, data must not be sent to or be retrieved by the wrong lobby.
 ### Latency
 * With multiple lobbies with up to 5 players in each one and only one server it is very likely that latency will be an issues since it is only possible for the server to process one request at a time.
+
+## **API Documentation**
+### SIGNIN (POST)
+* Given a username and a password, get from the database the salt associated with that username. Compute the salted hash and check for a match. If correct, sign the user in. If incorrect or the username does not exist, do not allow the user to sign in.
+* Body: Object
+    * username: string (account username)
+    * password: string (salted hash of the password)
+* Status 200 -> User signed in successfully
+    * Content: application/json
+    * Body: "User signed in"
+* Status 401 -> Username does not exist or incorrect password
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### SIGNUP (POST)
+* Given a username and a password, generate a salt value, create a salted hash for the password and add the user to the database. Then sign that user in.
+* Body: Object
+    * username: string (account username)
+    * password: string (salted hash of the password)
+* Status 200 -> User signed in successfully
+    * Content: application/json
+    * Body: "User signed up"
+* Status 400 -> Username already in use
+    * Content: application/json
+    * Body: "user already exists"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### SIGNOUT (GET)
+* Sign an authenticated user out of the application
+* Status 200 -> User signed in successfully
+    * Content: application/json
+    * Body: "signed out"
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET IMAGE (GET)
+* Get an image from the database in Object Representation given an image ID
+* Status 200 -> Image obtained successfully
+    * Content: application/json
+    * Body: image object
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 404 -> Image does not exist
+    * Content: application/json
+    * Body: "Image ID does not exist"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET IMAGE FILE (GET)
+* Get an image file from the database given its ID
+* Status 200 -> Image obtained successfully
+    * Content: application/json
+    * Body: image file
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 404 -> Image does not exist
+    * Content: application/json
+    * Body: "Image ID does not exist"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### CREATE LOBBY (POST)
+* Create a lobby with a given name hosted by the currently signed in user
+* Body: Object
+    * Lobby.name: string (lobby name)
+* Status 200 -> Lobby created successfully
+    * Content: application/json
+    * Body: lobby object
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### JOIN LOBBY (PATCH)
+* Given a lobby ID add the currently signed in user to the lobby
+* Status 200 -> Successfully joined lobby
+    * Content: application/json
+    * Body: "Successfully joined lobby"
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 409 -> Lobby is full
+    * Content: application/json
+    * Body: "Lobby is full"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET PLAYERS IN LOBBY (GET)
+* Given a lobby ID, get a list of the players in that lobby
+* Status 200 -> Players retreived successfully
+    * Content: application/json
+    * Body: list of the players
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 404 -> Lobby not found
+    * Content: application/json
+    * Body: "lobby does not exist"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET LOBBIES (GET)
+* Get a list of active lobbies
+* Status 200 -> Lobbies found
+    * Content: application/json
+    * Body: list of lobbies
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET LOBBY HOST (GET)
+* Get the username of the host of a lobby given a lobby ID
+* Status 200 -> Host found
+    * Content: application/json
+    * Body: Player information object
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 404 -> Lobby not found
+    * Content: application/json
+    *Body: "Lobby not found"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### POST IMAGE (POST)
+* Post an image to a lobby
+* Body: Object
+    * lobbyID: string (the id of the lobby)
+* Status 200 -> image posted successfully
+    * Content: application/json
+    * Body: image object
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### POST CAPTION (POST)
+* Post a caption to an image in a lobby
+* Body: Object
+    * caption: string (caption text)
+    * lobbyId: string (id of lobby)
+    * imageId: string (id of image)
+* Status 200 -> caption posted successfully
+    * Content: application/json
+    * Body: caption object
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET CAPTIONS (GET)
+* Get the captions associated with an image
+* Status 200 -> captions retrieved successfully
+    * Content: application/json
+    * Body: list of captions
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### GET CAPTIONS (GET)
+* Get the captions associated with an image
+* Status 200 -> captions retrieved successfully
+    * Content: application/json
+    * Body: list of captions
+* Status 401 -> Not authenticated
+    * Content: application/json
+    * Body: "access denied"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### DELETE LOBBY (DELETE)
+* Delete a lobby given its lobby ID
+* Status 200 -> Lobby deleted successfully
+    * Content: application/json
+    * Body: "Lobby deleted successfully"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### DELETE CAPTIONS (DELETE)
+* Delete captions associated with a specific lobby ID
+* Status 200 -> Captions deleted successfully
+    * Content: application/json
+    * Body: "Captions for lobby deleted successfully"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
+
+### DELETE IMAGES (DELETE)
+* Delete images associated with a specific lobby ID
+* Status 200 -> images deleted successfully
+    * Content: application/json
+    * Body: "Images for lobby deleted successfully"
+* Status 500 -> Internal server error
+    * Content: application/json
+    * body: "internal server error"
+* <TODO : REQUEST TEXT>
