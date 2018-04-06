@@ -246,7 +246,9 @@ curl -b cookie.txt -X POST -F "file=@/home/radiantwings/Pictures/continent.png" 
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X POST -b cookie.txt -H "Content-Type: application/json" -d '{"caption":"Hello World","imageId":"5ac7954754b80a00142d06b1","lobbyId":"5ac792f154b80a00142d06b0"}' https://www.cloudtekk.me/api/captions/
+```
 
 ### GET CAPTIONS (GET)
 * Get the captions associated with an image
@@ -259,20 +261,9 @@ curl -b cookie.txt -X POST -F "file=@/home/radiantwings/Pictures/continent.png" 
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
-
-### GET CAPTIONS (GET)
-* Get the captions associated with an image
-* Status 200 -> captions retrieved successfully
-    * Content: application/json
-    * Body: list of captions
-* Status 401 -> Not authenticated
-    * Content: application/json
-    * Body: "access denied"
-* Status 500 -> Internal server error
-    * Content: application/json
-    * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/api/images/5ac7954754b80a00142d06b1/captions/
+```
 
 ### DELETE LOBBY (DELETE)
 * Delete a lobby given its lobby ID
@@ -282,7 +273,9 @@ curl -b cookie.txt -X POST -F "file=@/home/radiantwings/Pictures/continent.png" 
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X DELETE -b cookie.txt https://www.cloudtekk.me/api/lobbies/5ac792f154b80a00142d06b0/
+```
 
 ### DELETE CAPTIONS (DELETE)
 * Delete captions associated with a specific lobby ID
@@ -292,7 +285,9 @@ curl -b cookie.txt -X POST -F "file=@/home/radiantwings/Pictures/continent.png" 
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X DELETE -b cookie.txt https://www.cloudtekk.me/api/captions/5ac7963754b80a00142d06b2/
+```
 
 ### DELETE IMAGES (DELETE)
 * Delete images associated with a specific lobby ID
@@ -302,4 +297,6 @@ curl -b cookie.txt -X POST -F "file=@/home/radiantwings/Pictures/continent.png" 
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X DELETE -b cookie.txt https://www.cloudtekk.me/api/images/5ac7954754b80a00142d06b1/
+```
