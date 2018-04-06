@@ -55,7 +55,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X POST https://www.cloudtekk.me -H "Content-Type: application/json" -d '{"username":"mallory","password":"pass4mallory"}' https://www.cloudtekk.me/signup/
+```
 
 ### SIGNUP (POST)
 * Given a username and a password, generate a salt value, create a salted hash for the password and add the user to the database. Then sign that user in.
@@ -71,7 +73,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X POST -H "Content-Type: application/json" -d '{"username":"mallory","password":"pass4mallory"}' -c cookie.txt https://www.cloudtekk.me/signin/
+```
 
 ### SIGNOUT (GET)
 * Sign an authenticated user out of the application
@@ -84,7 +88,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/signout/
+```
 
 ### GET IMAGE (GET)
 * Get an image from the database in Object Representation given an image ID
@@ -100,7 +106,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/api/images/5ac3ef9df455c90014dd6ada/
+```
 
 ### GET IMAGE FILE (GET)
 * Get an image file from the database given its ID
@@ -116,7 +124,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/api/images/5ac3ef9df455c90014dd6ada/image/
+```
 
 ### CREATE LOBBY (POST)
 * Create a lobby with a given name hosted by the currently signed in user
@@ -131,7 +141,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X POST -b cookie.txt -H "Content-Type: application/json" -d '{"name":"My Lobby","host":"mallory"}' https://www.cloudtekk.me/api/lobbies/
+```
 
 ### JOIN LOBBY (PATCH)
 * Given a lobby ID add the currently signed in user to the lobby
@@ -147,7 +159,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -X PATCH -b cookie.txt -H "Content-Type: application/json" -d '{"action":"join"}' https://www.cloudtekk.me/api/lobbies/5ac792f154b80a00142d06b0/
+```
 
 ### GET PLAYERS IN LOBBY (GET)
 * Given a lobby ID, get a list of the players in that lobby
@@ -163,7 +177,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/api/lobbies/5ac792f154b80a00142d06b0/players/
+```
 
 ### GET LOBBIES (GET)
 * Get a list of active lobbies
@@ -176,7 +192,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/api/lobbies/
+```
 
 ### GET LOBBY HOST (GET)
 * Get the username of the host of a lobby given a lobby ID
@@ -192,7 +210,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt https://www.cloudtekk.me/api/lobbies/5ac792f154b80a00142d06b0/host/
+```
 
 ### POST IMAGE (POST)
 * Post an image to a lobby
@@ -207,7 +227,9 @@ We are planning to use MongoDB hosted on Mongo Atlas to store user information s
 * Status 500 -> Internal server error
     * Content: application/json
     * body: "internal server error"
-* <TODO : REQUEST TEXT>
+```
+curl -b cookie.txt -X POST -F "file=@/home/radiantwings/Pictures/continent.png" -F "lobbyId=5ac792f154b80a00142d06b0" https://www.cloudtekk.me/api/images/
+```
 
 ### POST CAPTION (POST)
 * Post a caption to an image in a lobby
